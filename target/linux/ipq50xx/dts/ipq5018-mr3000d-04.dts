@@ -114,6 +114,13 @@
 			drive-strength = <8>;
 			bias-pull-down;
 		};
+
+				   
+				   
+					 
+						
+				  
+	
 	};
 
 	button_pins: button_pins {
@@ -168,6 +175,11 @@
 			label = "green:system";
 			gpio = <&tlmm 46 GPIO_ACTIVE_HIGH>;
 		};
+
+									
+						   
+									  
+	
 	};
 
 	button {
@@ -249,36 +261,36 @@
 						   //              SGMII_EN_TX | SGMII_EN_RX | SGMII_EN_PLL
 			>;
 
-			switch_cpu_bmp = <0x60>;  // CPU port bitmap: 5 6
-			switch_lan_bmp = <0x0e>;  // LAN port bitmap: 1 2 3
-			switch_wan_bmp = <0x10>;  // WAN port bitmap: 4
+			switch_cpu_bmp = <0x48>;  // CPU port bitmap: 3 6
+			switch_lan_bmp = <0x34>;  // LAN port bitmap: 2 4 5
+			switch_wan_bmp = <0x02>;  // WAN port bitmap: 1
 
 			qcom,port_phyinfo {
-				// MAC1 -> Phy0 -> LAN1
+				// MAC1 -> Phy0 -> WAN
 				port@1 {
 					port_id = <1>;
 					phy_address = <0>;
 				};
 
-				// MAC2 -> Phy1 -> LAN2
+				// MAC2 -> Phy1 -> LAN1
 				port@2 {
 					port_id = <2>;
 					phy_address = <1>;
 				};
 
-				// MAC3 -> Phy2 -> LAN3
+				// MAC3 -> Phy2 -> IPQ5000 GE Phy
 				port@3 {
 					port_id = <3>;
 					phy_address = <2>;
 				};
 
-				// MAC4 -> Phy3 -> WAN
+				// MAC4 -> Phy3 -> LAN2
 				port@4 {
 					port_id = <4>;
 					phy_address = <3>;
 				};
 
-				// MAC5 -> Phy4 -> IPQ5000 GE Phy
+				// MAC5 -> Phy4 -> LAN3
 				port@5 {
 					port_id = <5>;
 					phy_address = <4>;
@@ -343,32 +355,32 @@
 &mdio1 {
 	pinctrl-0 = <&mdio1_pins>;
 	pinctrl-names = "default";
-	phy-reset-gpio = <&tlmm 26 0>;
+							   
 	status = "ok";
 
-										  
+	reset-gpios = <&tlmm 26 GPIO_ACTIVE_LOW>;
 
-	// QCA8337 Phy0 -> LAN1
+	// QCA8337 Phy0 -> WAN
 	ethernet-phy@0 {
 		reg = <0>;
 	};
 
-	// QCA8337 Phy1 -> LAN2
+	// QCA8337 Phy1 -> LAN1
 	ethernet-phy@1 {
 		reg = <1>;
 	};
 
-	// QCA8337 Phy2 -> LAN3
+	// QCA8337 Phy2 -> IPQ5018 GE Phy
 	ethernet-phy@2 {
 		reg = <2>;
 	};
 
-	// QCA8337 Phy3 -> WAN
+	// QCA8337 Phy3 -> LAN2
 	ethernet-phy@3 {
 		reg = <3>;
 	};
 
-	// QCA8337 Phy4 -> IPQ5018 GE Phy
+	// QCA8337 Phy4 -> LAN3
 	ethernet-phy@4 {
 		reg = <4>;
 	};
