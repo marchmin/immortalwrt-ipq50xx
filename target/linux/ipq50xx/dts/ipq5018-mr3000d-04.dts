@@ -114,13 +114,6 @@
 			drive-strength = <8>;
 			bias-pull-down;
 		};
-
-				   
-				   
-					 
-						
-				  
-	
 	};
 
 	button_pins: button_pins {
@@ -175,11 +168,6 @@
 			label = "green:system";
 			gpio = <&tlmm 46 GPIO_ACTIVE_HIGH>;
 		};
-
-									
-						   
-									  
-	
 	};
 
 	button {
@@ -266,31 +254,31 @@
 			switch_wan_bmp = <0x02>;  // WAN port bitmap: 1
 
 			qcom,port_phyinfo {
-				// MAC1 -> Phy0 -> WAN
+				// MAC1 -> Phy0 -> LAN3
 				port@1 {
 					port_id = <1>;
 					phy_address = <0>;
 				};
 
-				// MAC2 -> Phy1 -> LAN1
+				// MAC2 -> Phy1 -> LAN2
 				port@2 {
 					port_id = <2>;
 					phy_address = <1>;
 				};
 
-				// MAC3 -> Phy2 -> IPQ5000 GE Phy
+				// MAC3 -> Phy2 -> LAN1
 				port@3 {
 					port_id = <3>;
 					phy_address = <2>;
 				};
 
-				// MAC4 -> Phy3 -> LAN2
+				// MAC4 -> Phy3 -> WAN
 				port@4 {
 					port_id = <4>;
 					phy_address = <3>;
 				};
 
-				// MAC5 -> Phy4 -> LAN3
+				// MAC5 -> Phy4 -> IPQ5000 GE Phy
 				port@5 {
 					port_id = <5>;
 					phy_address = <4>;
@@ -360,27 +348,27 @@
 
 	reset-gpios = <&tlmm 26 GPIO_ACTIVE_LOW>;
 
-	// QCA8337 Phy0 -> WAN
+	// QCA8337 Phy0 -> LAN3
 	ethernet-phy@0 {
 		reg = <0>;
 	};
 
-	// QCA8337 Phy1 -> LAN1
+	// QCA8337 Phy1 -> LAN2
 	ethernet-phy@1 {
 		reg = <1>;
 	};
 
-	// QCA8337 Phy2 -> IPQ5018 GE Phy
+	// QCA8337 Phy2 -> LAN1
 	ethernet-phy@2 {
 		reg = <2>;
 	};
 
-	// QCA8337 Phy3 -> LAN2
+	// QCA8337 Phy3 -> WAN
 	ethernet-phy@3 {
 		reg = <3>;
 	};
 
-	// QCA8337 Phy4 -> LAN3
+	// QCA8337 Phy4 -> IPQ5018 GE Phy
 	ethernet-phy@4 {
 		reg = <4>;
 	};
