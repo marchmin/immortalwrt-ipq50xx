@@ -34,11 +34,7 @@
 	reserved-memory {
 		q6_mem_regions: q6_mem_regions@4b000000 {
 			no-map;
-#ifndef CONFIG_ATH11K_MEM_PROFILE_256M
-			reg = <0x0 0x4b000000 0x0 0x3b00000>;
-#else
 			reg = <0x0 0x4b000000 0x0 0x5400000>;
-#endif
 		};
 	};
 
@@ -518,11 +514,7 @@
 
 	qcom,bdf-addr = <0x4c400000 0x4c400000 0x4c400000>;
 	qcom,caldb-addr = <0x4d400000 0x4d400000 0>;
-#ifndef CONFIG_ATH11K_MEM_PROFILE_256M
-	m3-dump-addr = <0x4d400000>;
-#else
-	m3-dump-addr = <0x4e000000>;
-#endif
+	m3-dump-addr = <0>;
 
 	status = "ok";
 };
@@ -536,12 +528,8 @@
 	qcom,board_id = <0x60>;
 
 	qcom,bdf-addr = <0x4ed00000 0x4ed00000 0x4e400000>;
-	qcom,caldb-addr = <0x4ff00000 0x4ff00000 0>;
-#ifndef CONFIG_ATH11K_MEM_PROFILE_256M
-	m3-dump-addr = <0x4ea00000>;
-#else
-	m3-dump-addr = <0x4e000000>;
-#endif
+	qcom,caldb-addr = <0x4ff00000 0x4ff00000 0>;	
+	m3-dump-addr = <0x4df00000>;
 
 	status = "ok";
 };
