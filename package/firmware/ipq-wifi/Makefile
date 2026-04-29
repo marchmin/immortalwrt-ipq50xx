@@ -33,6 +33,7 @@ ALLWIFIBOARDS:= \
 	cellc_rtl30vw \
 	cmcc_rax3000q \
 	cmcc_mr3000d-04 \
+	cmcc_mr3000d-ci \
 	devolo_magic-2-wifi-next \
 	dlink_dap2610 \
 	edgecore_ecw5410 \
@@ -129,6 +130,7 @@ $(eval $(call generate-ipq-wifi-package,buffalo_wtr-m2133hp,Buffalo WTR-M2133HP)
 $(eval $(call generate-ipq-wifi-package,cellc_rtl30vw, Cell C RTL30VW))
 $(eval $(call generate-ipq-wifi-package,cmcc_rax3000q,CMCC RAX3000Q))
 $(eval $(call generate-ipq-wifi-package,cmcc_mr3000d-04,CMCC MR3000D-04))
+$(eval $(call generate-ipq-wifi-package,cmcc_mr3000d-ci,CMCC MR3000D-CI))
 $(eval $(call generate-ipq-wifi-package,devolo_magic-2-wifi-next,devolo Magic 2 WiFi next))
 $(eval $(call generate-ipq-wifi-package,dlink_dap2610,D-Link DAP-2610))
 $(eval $(call generate-ipq-wifi-package,edgecore_ecw5410,Edgecore ECW5410))
