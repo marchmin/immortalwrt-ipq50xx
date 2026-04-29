@@ -106,8 +106,25 @@ define Device/cmcc_mr3000d-04
   DEVICE_PACKAGES := \
 	ath11k-firmware-ipq5018 \
 	ath11k-firmware-qcn6122 \
-	ipq-wifi-cmcc_mr3000d-04
+	ipq-wifi-cmcc_mr3000d-ci
 endef
 TARGET_DEVICES += cmcc_mr3000d-04
+
+define Device/cmcc_mr3000d-ci
+  $(call Device/FitImage)
+  $(call Device/UbiFit)
+  SOC := ipq5018
+  DEVICE_VENDOR := CMCC
+  DEVICE_MODEL := MR3000D-CI
+  BLOCKSIZE := 128k
+  PAGESIZE := 2048
+  DEVICE_DTS_CONFIG := config@mp03.3-v1
+  IMAGES := nand-factory.ubi
+  DEVICE_PACKAGES := \
+	ath11k-firmware-ipq5018 \
+	ath11k-firmware-qcn6122 \
+	ipq-wifi-cmcc_mr3000d-ci
+endef
+TARGET_DEVICES += cmcc_mr3000d-ci
 
 $(eval $(call BuildImage))
