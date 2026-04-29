@@ -20,8 +20,8 @@
 
 		led-boot = &led_status_green;
 		led-failsafe = &led_status_green;
-		led-running = &led_status;
-		led-upgrade = &led_status;
+		led-running = &led_status_green;
+		led-upgrade = &led_status_green;
 	};
 
 	chosen {
@@ -99,7 +99,7 @@
 	leds_pins: leds_pins {
 			// led_2g
 		led_status_red {
-			pins = "gpio30";
+			pins = "gpio17";
 			function = "gpio";
 			drive-strength = <8>;
 			bias-pull-down;
@@ -111,12 +111,6 @@
 			drive-strength = <8>;
 			bias-pull-down;
 		};
-         led_status {
-            pins = "gpio17";
-			function = "gpio";
-			drive-strength = <8>;
-			bias-pull-down;
-        };
 	};
 
 	button_pins: button_pins {
