@@ -101,20 +101,7 @@
 	};
 
 	leds_pins: leds_pins {
-				   
-				   
-					 
-						
-				  
-	
-
 			// led_2g
-				   
-					 
-						
-				  
-	
-
 		led_status_red {
 			pins = "gpio30";
 			function = "gpio";
@@ -173,20 +160,9 @@
 		pinctrl-0 = <&leds_pins>;
 		pinctrl-names = "default";
 
-									
-						 
-									  
-						
-	
-
 		led_status_red: led_status_red {
 			label = "red:system";
 			gpio = <&tlmm 30 GPIO_ACTIVE_HIGH>;
-	
-
-										
-						   
-									  
 		};
 
 		led_status_green: led_status_green {
@@ -359,29 +335,8 @@
 	phy-reset-gpio = <&tlmm 27 0>;
 	status = "ok";
 
-									  
-			 
-				 
-
-										   
-									   
-										 
-
-		 
-						  
-		   
-			  
-	 
-
-						  
-		   
 	// QCA8337 Phy0 -> LAN3
 	ethernet-phy@0 {
-
-						  
-		   
-			  
-	 
 		reg = <0>;
 	};
 
@@ -403,10 +358,6 @@
 	// QCA8337 Phy4 -> IPQ5018 GE Phy
 	ethernet-phy@4 {
 		reg = <4>;
-	 
-	
-   
-  
 	};
 };
 
