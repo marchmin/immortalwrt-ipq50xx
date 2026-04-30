@@ -101,33 +101,34 @@
 	};
 
 	leds_pins: leds_pins {
-				   
-				   
-					 
-						
-				  
-	
-
 			// led_2g
-				   
-					 
-						
-				  
-	
-
 		led_status_red {
 			pins = "gpio30";
 			function = "gpio";
 			drive-strength = <8>;
 			bias-pull-down;
 		};
+
 			// led_5g
+				   
+					 
+						
+				  
+	
+
 		led_status_green {
 			pins = "gpio46";
 			function = "gpio";
 			drive-strength = <8>;
 			bias-pull-down;
 		};
+
+					   
+				   
+					 
+						
+				  
+	
 	};
 
 	button_pins: button_pins {
@@ -173,26 +174,26 @@
 		pinctrl-0 = <&leds_pins>;
 		pinctrl-names = "default";
 
-									
-						 
-									  
-						
-	
-
 		led_status_red: led_status_red {
 			label = "red:system";
 			gpio = <&tlmm 30 GPIO_ACTIVE_HIGH>;
-	
-
-										
-						   
-									  
+						
 		};
 
 		led_status_green: led_status_green {
 			label = "green:system";
 			gpio = <&tlmm 46 GPIO_ACTIVE_HIGH>;
 		};
+
+										
+						   
+									  
+	
+
+											
+							 
+									  
+	
 	};
 
 	button {
@@ -270,6 +271,13 @@
 			switch_cpu_bmp = <0x00000060>; // CPU port bitmap: 6 5
             switch_lan_bmp = <0x0000000e>; // LAN port bitmap: 1 2 3
             switch_wan_bmp = <0x00000010>; // WAN port bitmap: 4 
+																							   
+																 
+	 
+
+													
+													  
+												  
 
 			qcom,port_phyinfo {
 				// MAC1 -> Phy0 -> LAN3
@@ -279,7 +287,7 @@
 				};
 
 				// MAC2 -> Phy1 -> LAN2
-				port@2 {
+				port@1=2 {
 					port_id = <2>;
 					phy_address = <1>;
 				};
@@ -291,9 +299,15 @@
 				};
 
 				// MAC4 -> Phy3 -> WAN
-				port@4{
+				port@4 {
 					port_id = <4>;
 					phy_address = <3>;
+				};
+
+				// MAC5 -> Phy4 -> IPQ5000 GE Phy
+				port@5 {
+					port_id = <5>;
+					phy_address = <4>;
 				};
 
 				// MAC6 ---SGMII---> IPQ5000 MAC1
@@ -359,29 +373,8 @@
 	phy-reset-gpio = <&tlmm 27 0>;
 	status = "ok";
 
-					
-					
-									  
-			 
-				 
-
-										   
-									   
-										 
-
-		 
-						  
-		   
-			  
-	 
-
 	// QCA8337 Phy0 -> LAN3
 	ethernet-phy@0 {
-			  
-	 
-
-						  
-		   
 		reg = <0>;
 	};
 
@@ -403,10 +396,6 @@
 	// QCA8337 Phy4 -> IPQ5018 GE Phy
 	ethernet-phy@4 {
 		reg = <4>;
-				 
-	  
-	 
-	
 	};
 };
 
