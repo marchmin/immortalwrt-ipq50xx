@@ -28,7 +28,7 @@ ipq50xx_setup_interfaces()
 		cmcc,mr3000d-04)
 			ucidef_add_switch "switch1" \
 				"8u@eth1" "4u@eth0" \
-				"0:lan:3" "1:lan:2" "2:lan:1" \
+				"0:lan:1" "1:lan:2" "2:lan:3" \
 				"3:wan"
 			;;
 	esac
