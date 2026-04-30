@@ -31,7 +31,7 @@
 		stdout-path = "serial0:115200n8";
 	};
 
-		reserved-memory {
+	reserved-memory {
 		q6_mem_regions: q6_mem_regions@4b000000 {
 			no-map;
 #ifndef CONFIG_ATH11K_MEM_PROFILE_256M
@@ -41,7 +41,6 @@
 #endif
 		};
 	};
-
 
 	thermal-zones {
 		status = "ok";
@@ -102,7 +101,20 @@
 	};
 
 	leds_pins: leds_pins {
+				   
+				   
+					 
+						
+				  
+	
+
 			// led_2g
+				   
+					 
+						
+				  
+	
+
 		led_status_red {
 			pins = "gpio30";
 			function = "gpio";
@@ -161,9 +173,20 @@
 		pinctrl-0 = <&leds_pins>;
 		pinctrl-names = "default";
 
+									
+						 
+									  
+						
+	
+
 		led_status_red: led_status_red {
 			label = "red:system";
 			gpio = <&tlmm 30 GPIO_ACTIVE_HIGH>;
+	
+
+										
+						   
+									  
 		};
 
 		led_status_green: led_status_green {
@@ -244,31 +267,31 @@
 
 	        qca,ar8327-initvals = <0x00000004 0x07600000 0x00000008 0x01000000 0x0000000c 0x00000080 0x00000010 0x002613a0 0x000000e4 0x000aa545 0x000000e0 0xc74164de 0x0000007c 0x0000004e 0x00000094 0x0000004e>;
             
-			switch_cpu_bmp = <0x00000040>; // CPU port bitmap: 6
-            switch_lan_bmp = <0x0000000e>; // LAN port bitmap: 0 1 2
-            switch_wan_bmp = <0x00000030>; // WAN port bitmap: 3
+			switch_cpu_bmp = <0x00000060>; // CPU port bitmap: 6 5
+            switch_lan_bmp = <0x0000000e>; // LAN port bitmap: 1 2 3
+            switch_wan_bmp = <0x00000010>; // WAN port bitmap: 4 
 
 			qcom,port_phyinfo {
 				// MAC1 -> Phy0 -> LAN3
-				port@0 {
+				port@1 {
 					port_id = <1>;
 					phy_address = <0>;
 				};
 
 				// MAC2 -> Phy1 -> LAN2
-				port@1 {
+				port@2 {
 					port_id = <2>;
 					phy_address = <1>;
 				};
 
 				// MAC3 -> Phy2 -> LAN1
-				port@2 {
+				port@3 {
 					port_id = <3>;
 					phy_address = <2>;
 				};
 
 				// MAC4 -> Phy3 -> WAN
-				port@3 {
+				port@4{
 					port_id = <4>;
 					phy_address = <3>;
 				};
@@ -336,56 +359,54 @@
 	phy-reset-gpio = <&tlmm 27 0>;
 	status = "ok";
 
-		// QCA8337
-		ess-switch1@1 {
-			compatible = "qcom,ess-switch-qca83xx";
-			device_id = <1>;
+					
+					
+									  
+			 
+				 
 
-			reset_gpio = <39>;
+										   
+									   
+										 
 
-			switch_access_mode = "mdio";
-			mdio-bus = <&mdio1>;
+		 
+						  
+		   
+			  
+	 
 
-	        qca,ar8327-initvals = <0x00000004 0x07600000 0x00000008 0x01000000 0x0000000c 0x00000080 0x00000010 0x002613a0 0x000000e4 0x000aa545 0x000000e0 0xc74164de 0x0000007c 0x0000004e 0x00000094 0x0000004e>;
-            
-			//switch_cpu_bmp = <0x00000040>; // CPU port bitmap: 6
-           // switch_lan_bmp = <0x0000000e>; // LAN port bitmap: 0 1 2
-           // switch_wan_bmp = <0x00000030>; // WAN port bitmap: 3
+	// QCA8337 Phy0 -> LAN3
+	ethernet-phy@0 {
+			  
+	 
 
-		ports {
-			// MAC0 -> Phy0 -> LAN3
-			port@0 {
-				reg = <0>;
-			};
+						  
+		   
+		reg = <0>;
+	};
 
-			// MAC1 -> Phy1 -> LAN2
-			port@1 {
-				reg = <1>;
-			};
+	// QCA8337 Phy1 -> LAN2
+	ethernet-phy@1 {
+		reg = <1>;
+	};
 
-			// MAC2 -> Phy2 -> LAN1
-			port@2 {
-				reg = <2>;
-			};
+	// QCA8337 Phy2 -> LAN1
+	ethernet-phy@2 {
+		reg = <2>;
+	};
 
-			// MAC3 -> Phy3 -> WAN
-			port@3 {
-				reg = <3>;
-			};
+	// QCA8337 Phy3 -> WAN
+	ethernet-phy@3 {
+		reg = <3>;
+	};
 
-			// MAC4 -> Phy4 -> IPQ5018 GE Phy
-			port@4 {
-				reg = <4>;
-			};
-
-			// MAC8 ---SGMII+---> IPQ5018 MAC1
-			port@6 {
-				reg = <6>;
-
-				forced-speed = <1000>;
-				forced-duplex = <1>;
-			};
-		};
+	// QCA8337 Phy4 -> IPQ5018 GE Phy
+	ethernet-phy@4 {
+		reg = <4>;
+				 
+	  
+	 
+	
 	};
 };
 
@@ -531,16 +552,12 @@
 	qcom,multipd_arch;
 	qcom,rproc = <&q6_wcss_pd1>;
 	qcom,userpd-subsys-name = "q6v5_wcss_userpd1";
-#ifdef __IPQ_MEM_PROFILE_256_MB__
-	qcom,tgt-mem-mode = <2>;
-#else
-	qcom,tgt-mem-mode = <1>;
-#endif
+	qcom,tgt-mem-mode = <0x00000001>;
 	
 	// Be overridden by /etc/hotplug.d/firmware/10-ath11k-board_id
 	// M79: 0x10
 	// M81: 0x24
-	qcom,board_id = <0x23>;
+	qcom,board_id = <0x24>;
 
 	qcom,bdf-addr = <0x4c400000 0x4c400000 0x4c400000>;
 	qcom,caldb-addr = <0x4d400000 0x4d400000 0>;
@@ -559,13 +576,7 @@
 	qcom,multipd_arch;
 	qcom,rproc = <&q6_wcss_pd2>;
 	qcom,userpd-subsys-name = "q6v5_wcss_userpd2";
-	
-#ifdef __IPQ_MEM_PROFILE_256_MB__
-	qcom,tgt-mem-mode = <2>;
-#else
-	qcom,tgt-mem-mode = <1>;
-#endif
-
+	qcom,tgt-mem-mode = <0x00000001>;
 	qcom,board_id = <0x60>;
 
     qcom,bdf-addr = <0x4ed00000 0x4ed00000 0x4e400000 0x00000000 0x00000000>;
