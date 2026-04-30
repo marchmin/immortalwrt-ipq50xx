@@ -101,7 +101,20 @@
 	};
 
 	leds_pins: leds_pins {
+				   
+				   
+					 
+						
+				  
+	
+
 			// led_2g
+				   
+					 
+						
+				  
+	
+
 		led_status_red {
 			pins = "gpio30";
 			function = "gpio";
@@ -160,9 +173,20 @@
 		pinctrl-0 = <&leds_pins>;
 		pinctrl-names = "default";
 
+									
+						 
+									  
+						
+	
+
 		led_status_red: led_status_red {
 			label = "red:system";
 			gpio = <&tlmm 30 GPIO_ACTIVE_HIGH>;
+	
+
+										
+						   
+									  
 		};
 
 		led_status_green: led_status_green {
@@ -194,7 +218,7 @@
 	};
 
 	ess-instance {
-		num_devices = <1>;
+		num_devices = <2>;
 
 		// Dummy switch, to describe how the external ports connects to the MAC
 		// For example, some chips have PSGMII ports which combine 5 MAC into
@@ -207,8 +231,8 @@
 			cmnblk_clk = "internal_96MHz";
 
 			// MAC1 Mode
-			switch_mac_mode = <0xc>; // PORT_WRAPPER_SGMII_PLUS
-			// switch_mac_mode = <0xf>; // PORT_WRAPPER_SGMII_CHANNEL0
+			// switch_mac_mode = <0xc>; // PORT_WRAPPER_SGMII_PLUS
+			switch_mac_mode = <0xf>; // PORT_WRAPPER_SGMII_CHANNEL0
 
 			qcom,port_phyinfo {
 				// MAC0 -> GE Phy -> QCA8337 Phy4
@@ -228,6 +252,58 @@
 					forced-speed = <1000>;
 					forced-duplex = <1>;
 				};
+			};
+		};
+
+		// QCA8337
+		ess-switch1@1 {
+			compatible = "qcom,ess-switch-qca83xx";
+			device_id = <1>;
+
+			reset_gpio = <39>;
+
+			switch_access_mode = "mdio";
+			mdio-bus = <&mdio1>;
+
+	        qca,ar8327-initvals = <0x00000004 0x07600000 0x00000008 0x01000000 0x0000000c 0x00000080 0x00000010 0x002613a0 0x000000e4 0x000aa545 0x000000e0 0xc74164de 0x0000007c 0x0000004e 0x00000094 0x0000004e>;
+            
+			switch_cpu_bmp = <0x00000040>; // CPU port bitmap: 6
+            switch_lan_bmp = <0x0000000e>; // LAN port bitmap: 0 1 2
+            switch_wan_bmp = <0x00000030>; // WAN port bitmap: 3
+
+			qcom,port_phyinfo {
+				// MAC1 -> Phy0 -> LAN3
+				port@0 {
+					port_id = <1>;
+					phy_address = <0>;
+				};
+
+				// MAC2 -> Phy1 -> LAN2
+				port@1 {
+					port_id = <2>;
+					phy_address = <1>;
+				};
+
+				// MAC3 -> Phy2 -> LAN1
+				port@2 {
+					port_id = <3>;
+					phy_address = <2>;
+				};
+
+				// MAC4 -> Phy3 -> WAN
+				port@3 {
+					port_id = <4>;
+					phy_address = <3>;
+				};
+
+				// MAC6 ---SGMII---> IPQ5000 MAC1
+				port@6 {
+					port_id = <6>;
+
+					forced-speed = <1000>;
+					forced-duplex = <1>;
+				};				
+
 			};
 		};
 	};
@@ -280,42 +356,58 @@
 &mdio1 {
 	pinctrl-0 = <&mdio1_pins>;
 	pinctrl-names = "default";
+	phy-reset-gpio = <&tlmm 27 0>;
 	status = "ok";
 
-		// QCA8337
-            ess-switch1@1 {
-                compatible = "qcom,ess-switch-qca83xx";
-                device_id = <0x00000001>;
-                switch_access_mode = "mdio";
-                mdio-bus = <0x00000008>;
-                reset_gpio = <0x00000027>;
-                switch_cpu_bmp = <0x00000040>;
-                switch_lan_bmp = <0x0000000e>;
-                switch_wan_bmp = <0x00000030>;
-                qca,ar8327-initvals = <0x00000004 0x07600000 0x00000008 0x01000000 0x0000000c 0x00000080 0x00000010 0x002613a0 0x000000e4 0x000aa545 0x000000e0 0xc74164de 0x0000007c 0x0000004e 0x00000094 0x0000004e>;
-                qcom,port_phyinfo {
-                    port@0 {
-                        port_id = <0x00000001>;
-                        phy_address = <0x00000000>;
-                    };
-                    port@1 {
-                        port_id = <0x00000002>;
-                        phy_address = <0x00000001>;
-                    };
-                    port@2 {
-                        port_id = <0x00000003>;
-                        phy_address = <0x00000002>;
-                    };
-                    port@3 {
-                        port_id = <0x00000004>;
-                        phy_address = <0x00000003>;
-                    };
-                    port@4 {
-                        port_id = <0x00000005>;
-                        phy_address = <0x00000004>;
-                    };
-                };
-            };
+									  
+			 
+				 
+
+										   
+									   
+										 
+
+		 
+						  
+		   
+			  
+	 
+
+						  
+		   
+	// QCA8337 Phy0 -> LAN3
+	ethernet-phy@0 {
+
+						  
+		   
+			  
+	 
+		reg = <0>;
+	};
+
+	// QCA8337 Phy1 -> LAN2
+	ethernet-phy@1 {
+		reg = <1>;
+	};
+
+	// QCA8337 Phy2 -> LAN1
+	ethernet-phy@2 {
+		reg = <2>;
+	};
+
+	// QCA8337 Phy3 -> WAN
+	ethernet-phy@3 {
+		reg = <3>;
+	};
+
+	// QCA8337 Phy4 -> IPQ5018 GE Phy
+	ethernet-phy@4 {
+		reg = <4>;
+	 
+	
+   
+  
+	};
 };
 
 &q6v5_wcss {
@@ -364,7 +456,14 @@
 
 	qcom,bootargs_smem = <507>;
 	
-	boot-args = <0x00000001 0x00000004 0x00000003 0x0000000f 0x00000000 0x00000000>;
+	/* The QCN6102 radio should map to UPD ID 2. Without       */
+	/* bootargs, the firmware will expect it to be on UPD ID 3 */
+	boot-args = <
+		/*       type:	*/	0x1	/* PCIE0	*/
+		/*     length:	*/	4
+		/*     UPD ID:	*/	2
+		/* reset GPIO:	*/	15
+		/*   reserved:	*/	0 0>;
 
 	status = "ok";
 
@@ -453,11 +552,16 @@
 	qcom,multipd_arch;
 	qcom,rproc = <&q6_wcss_pd1>;
 	qcom,userpd-subsys-name = "q6v5_wcss_userpd1";
-
-	qcom,board_id = <0x23>;
+	qcom,tgt-mem-mode = <0x00000001>;
+	
+	// Be overridden by /etc/hotplug.d/firmware/10-ath11k-board_id
+	// M79: 0x10
+	// M81: 0x24
+	qcom,board_id = <0x24>;
 
 	qcom,bdf-addr = <0x4c400000 0x4c400000 0x4c400000>;
-	qcom,caldb-addr = <0x4d200000 0x4d200000 0>;
+	qcom,caldb-addr = <0x4d400000 0x4d400000 0>;
+	qcom,caldb-size = <0x00200000>;
 #ifndef CONFIG_ATH11K_MEM_PROFILE_256M
 	m3-dump-addr = <0x4d400000>;
 #else
@@ -472,11 +576,13 @@
 	qcom,multipd_arch;
 	qcom,rproc = <&q6_wcss_pd2>;
 	qcom,userpd-subsys-name = "q6v5_wcss_userpd2";
-
+	qcom,tgt-mem-mode = <0x00000001>;
 	qcom,board_id = <0x60>;
 
-	qcom,bdf-addr = <0x4d500000 0x4d500000 0x4d100000>;
-	qcom,caldb-addr = <0x4e500000 0x4e500000 0>;
+    qcom,bdf-addr = <0x4ed00000 0x4ed00000 0x4e400000 0x00000000 0x00000000>;
+    qcom,caldb-addr = <0x4ff00000 0x4ff00000 0x00000000 0x00000000 0x00000000>;
+    qcom,caldb-size = <0x00500000>;
+	
 #ifndef CONFIG_ATH11K_MEM_PROFILE_256M
 	m3-dump-addr = <0x4ea00000>;
 #else
