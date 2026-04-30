@@ -18,10 +18,10 @@
 		ethernet0 = &mac0;
 		ethernet1 = &mac1;
 
-		led-boot = &led_system_blue;
-		led-failsafe = &led_system_red;
-		led-running = &led_system_blue;
-		led-upgrade = &led_system_red;
+		led-boot = &led_status_green;
+		led-failsafe = &led_status_green;
+		led-running = &led_status_green;
+		led-upgrade = &led_status_green;
 	};
 
 	chosen {
@@ -101,20 +101,7 @@
 	};
 
 	leds_pins: leds_pins {
-				   
-				   
-					 
-						
-				  
-	
-
 			// led_2g
-				   
-					 
-						
-				  
-	
-
 		led_status_red {
 			pins = "gpio17";
 			function = "gpio";
@@ -173,20 +160,9 @@
 		pinctrl-0 = <&leds_pins>;
 		pinctrl-names = "default";
 
-									
-						 
-									  
-						
-	
-
 		led_status_red: led_status_red {
 			label = "red:system";
 			gpio = <&tlmm 17 GPIO_ACTIVE_HIGH>;
-	
-
-										
-						   
-									  
 		};
 
 		led_status_green: led_status_green {
@@ -306,31 +282,18 @@
 	pinctrl-names = "default";
 	status = "ok";
 
-					
-					
-									  
-			 
-				 
 
-										   
-									   
-										 
 
 			// QCA8337
 		ess-switch1@1 {
 			compatible = "qcom,ess-switch-qca83xx";
 			device_id = <1>;
-	 
 
 			reset_gpio = <27>;
-		   
-			  
-	 
 
 			switch_access_mode = "mdio";
 			mdio-bus = <&mdio1>;
 			 
-	 
 
 			qca,ar8327-initvals = <
 				0x000c 0x00000080  // PAD6_MODE = MAC6_SGMII_EN
@@ -344,7 +307,6 @@
 			switch_cpu_bmp = <0x40>;  // CPU port bitmap: 
 			switch_lan_bmp = <0x0e>;  // LAN port bitmap: 
 			switch_wan_bmp = <0x30>;  // WAN port bitmap: 
-	 
 
 			qcom,port_phyinfo {
 			
@@ -464,9 +426,6 @@
 	qcom,bootargs_smem = <507>;
 	boot-args = <0x1 0x4 0x3 0x0F 0x0 0x0>,
 		    <0x2 0x4 0x2 0x12 0x0 0x0>;
-						  
-						   
-							  
 
 	status = "ok";
 
