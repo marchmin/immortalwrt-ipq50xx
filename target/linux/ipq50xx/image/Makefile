@@ -124,7 +124,7 @@ define Device/cmcc_mr3000d-ci
   ATH11K_MEM_PROFILE_256M \
 	ath11k-firmware-ipq5018 \
 	ath11k-firmware-qcn6122 \
-	ipq-wifi-redmi_ax3000
+	ipq-wifi-xiaomi_cr881x
 endef
 TARGET_DEVICES += cmcc_mr3000d-ci
 
