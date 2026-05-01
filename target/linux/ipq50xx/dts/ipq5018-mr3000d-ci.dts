@@ -99,7 +99,7 @@
 	leds_pins: leds_pins {
 			// led_2g
 		led_status_red {
-			pins = "gpio17";
+			pins = "gpio30";
 			function = "gpio";
 			drive-strength = <8>;
 			bias-pull-down;
