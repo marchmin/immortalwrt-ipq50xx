@@ -108,27 +108,13 @@
 			drive-strength = <8>;
 			bias-pull-down;
 		};
-
 			// led_5g
-				   
-					 
-						
-				  
-	
-
 		led_status_green {
 			pins = "gpio46";
 			function = "gpio";
 			drive-strength = <8>;
 			bias-pull-down;
 		};
-
-					   
-				   
-					 
-						
-				  
-	
 	};
 
 	button_pins: button_pins {
@@ -177,23 +163,12 @@
 		led_status_red: led_status_red {
 			label = "red:system";
 			gpio = <&tlmm 30 GPIO_ACTIVE_HIGH>;
-						
 		};
 
 		led_status_green: led_status_green {
 			label = "green:system";
 			gpio = <&tlmm 46 GPIO_ACTIVE_HIGH>;
 		};
-
-										
-						   
-									  
-	
-
-											
-							 
-									  
-	
 	};
 
 	button {
@@ -266,18 +241,18 @@
 			switch_access_mode = "mdio";
 			mdio-bus = <&mdio1>;
 
-	        qca,ar8327-initvals = <0x00000004 0x07600000 0x00000008 0x01000000 0x0000000c 0x00000080 0x00000010 0x002613a0 0x000000e4 0x000aa545 0x000000e0 0xc74164de 0x0000007c 0x0000004e 0x00000094 0x0000004e>;
-            
+	        qca,ar8327-initvals = <
+				0x000c 0x00000080  // PAD6_MODE = MAC6_SGMII_EN
+				0x0010 0x002613a0  // PWS_REG = DEFAULT_VALUE | SERDES_AEN
+				0x0094 0x000010ce  // PORT6_STATUS = DEFAULT_VALUE | DUPLEX_MODE_6 | RXMAC_EN_6 |
+						   //                TXMAC_EN_6 | SPEED_6(1000M)
+				0x00e0 0xc74164de  // SGMII_CTRL = DEFAULT_VALUE | MODE_CTRL_25M(SGMII_PHY) | SGMII_EN_SD |
+						   //              SGMII_EN_TX | SGMII_EN_RX | SGMII_EN_PLL
+			>;
+
 			switch_cpu_bmp = <0x00000060>; // CPU port bitmap: 6 5
             switch_lan_bmp = <0x0000000e>; // LAN port bitmap: 1 2 3
             switch_wan_bmp = <0x00000010>; // WAN port bitmap: 4 
-																							   
-																 
-	 
-
-													
-													  
-												  
 
 			qcom,port_phyinfo {
 				// MAC1 -> Phy0 -> LAN3
@@ -309,7 +284,6 @@
 					port_id = <5>;
 					phy_address = <4>;
 				};
-
 				// MAC6 ---SGMII---> IPQ5000 MAC1
 				port@6 {
 					port_id = <6>;
