@@ -27,9 +27,11 @@
 	chosen {
 		// Override the root parameter from u-boot
 		// Increase coherent_pool size for WiFi
-		bootargs-append = " root=/dev/ubiblock0_1 coherent_pool=2M";
+		bootargs = "console=ttyMSM0,115200,n8 rw init=/init";
+ 		bootargs-append = " swiotlb=1 coherent_pool=2M";
 		stdout-path = "serial0:115200n8";
 	};
+
 
 reserved-memory {
 		q6_mem_regions: q6_mem_regions@4b000000 {
