@@ -575,35 +575,6 @@ reserved-memory {
 	m3-dump-addr = <0x4ea00000>;
 #else
 	m3-dump-addr = <0x4df00000>;
-
-		/* QCN9000 tgt-mem-mode=1 layout - 26MB
-	 * +=========+==============+=========+
-	 * |  Region | Start Offset |   Size  |
-	 * +---------+--------------+---------+
-	 * | HREMOTE |  0x4CB00000  |   12MB  |
-	 * +---------+--------------+---------+
-	 * | M3 Dump |  0x4D700000  |   1MB   |
-	 * +---------+--------------+---------+
-	 * |   ETR   |  0x4D800000  |   1MB   |
-	 * +---------+--------------+---------+
-	 * |  Caldb  |  0x4D900000  |   8MB   |
-	 * +---------+--------------+---------+
-	 * | Pageable|  0x4E100000  |   4MB   |
-	 * +==================================+
-	 */
-	base-addr = <0x4CB00000>;
-	m3-dump-addr = <0x4df00000>;
-	etr-addr = <0x4D800000>;
-	caldb-addr = <0x4D900000>;
-	pageable-addr = <0x4E100000>;
-	caldb-size = <0x800000>;
-	hremote-size = <0xC00000>;
-	tgt-mem-mode = <0x1>;
-	pageable-size = <0x400000>;
-
-
-
-
 #endif
 
 	status = "ok";
