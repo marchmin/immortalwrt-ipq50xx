@@ -31,120 +31,12 @@
 		stdout-path = "serial0:115200n8";
 	};
 
-
-	
-    reserved-memory {
-        #address-cells = <0x00000002>;
-        #size-cells = <0x00000002>;
-        ranges;
-        nss@40000000 {
-            no-map;
-            reg = <0x00000000 0x40000000 0x00000000 0x01000000>;
-        };
-        uboot@4a800000 {
-            no-map;
-            reg = <0x00000000 0x4a800000 0x00000000 0x00200000>;
-        };
-        sbl@4aa00000 {
-            no-map;
-            reg = <0x00000000 0x4aa00000 0x00000000 0x00100000>;
-        };
-        smem@4ab00000 {
-            no-map;
-            reg = <0x00000000 0x4ab00000 0x00000000 0x00100000>;
-            linux,phandle = <0x00000013>;
-            phandle = <0x00000013>;
-        };
-        tz@4ac00000 {
-            no-map;
-            reg = <0x00000000 0x4ac00000 0x00000000 0x00400000>;
-        };
-        tzapp@4a400000 {
-            no-map;
-        };
-        bt@7000000 {
-            no-map;
-            reg = <0x00000000 0x07000000 0x00000000 0x00058000>;
-            linux,phandle = <0x00000027>;
-            phandle = <0x00000027>;
-        };
-        q6_mem_regions@4B000000 {
-            no-map;
-            reg = <0x00000000 0x4b000000 0x00000000 0x05400000>;
-            linux,phandle = <0x00000016>;
-            phandle = <0x00000016>;
-        };
-        q6_code_data@4B000000 {
-            no-map;
-            reg = <0x00000000 0x4b000000 0x00000000 0x00060000>;
-        };
-        q6_ipq5018_data@4C400000 {
-            no-map;
-            reg = <0x00000000 0x4c400000 0x00000000 0x00e00000>;
-            linux,phandle = <0x00000018>;
-            phandle = <0x00000018>;
-        };
-        m3_dump@4D200000 {
-            no-map;
-            reg = <0x00000000 0x4d200000 0x00000000 0x00100000>;
-            linux,phandle = <0x00000019>;
-            phandle = <0x00000019>;
-        };
-        q6_etr_dump@4D300000 {
-            no-map;
-            reg = <0x00000000 0x4d300000 0x00000000 0x00100000>;
-            linux,phandle = <0x0000001a>;
-            phandle = <0x0000001a>;
-        };
-        q6_caldb_region@4D400000 {
-            no-map;
-            reg = <0x00000000 0x4d400000 0x00000000 0x00200000>;
-            linux,phandle = <0x0000001b>;
-            phandle = <0x0000001b>;
-        };
-        q6_qcn6122_data1@4D600000 {
-            no-map;
-            reg = <0x00000000 0x4d600000 0x00000000 0x01000000>;
-        };
-        m3_dump_qcn6122_1@4E600000 {
-            no-map;
-            reg = <0x00000000 0x4e600000 0x00000000 0x00100000>;
-        };
-        q6_qcn6122_etr_1@4E700000 {
-            no-map;
-            reg = <0x00000000 0x4e700000 0x00000000 0x00100000>;
-        };
-        q6_qcn6122_caldb_1@4E800000 {
-            no-map;
-            reg = <0x00000000 0x4e800000 0x00000000 0x00500000>;
-        };
-        q6_qcn6122_data2@4E900000 {
-            no-map;
-            reg = <0x00000000 0x4ed00000 0x00000000 0x01000000>;
-            linux,phandle = <0x0000001c>;
-            phandle = <0x0000001c>;
-        };
-        m3_dump_qcn6122_2@4FD00000 {
-            no-map;
-            reg = <0x00000000 0x4fd00000 0x00000000 0x00100000>;
-            linux,phandle = <0x0000001d>;
-            phandle = <0x0000001d>;
-        };
-        q6_qcn6122_etr_2@4FE00000 {
-            no-map;
-            reg = <0x00000000 0x4fe00000 0x00000000 0x00100000>;
-            linux,phandle = <0x0000001e>;
-            phandle = <0x0000001e>;
-        };
-        q6_qcn6122_caldb_2@4FF00000 {
-            no-map;
-            reg = <0x00000000 0x4ff00000 0x00000000 0x00500000>;
-            linux,phandle = <0x0000001f>;
-            phandle = <0x0000001f>;
-        };
-    };
-	
-	
+	reserved-memory {
+		q6_mem_regions: q6_mem_regions@4b000000 {
+			no-map;
+			reg = <0x0 0x4b000000 0x0 0x5400000>;
+		};
+	};
 	
 
 	thermal-zones {
