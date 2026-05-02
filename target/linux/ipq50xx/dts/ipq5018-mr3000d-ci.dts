@@ -206,45 +206,32 @@
 	};
 
 	leds_pins: leds_pins {
-		led_system_blue {
-			pins = "gpio24";
+		led_system_green {
+			pins = "gpio30";
 			function = "gpio";
 			drive-strength = <8>;
 			bias-pull-down;
 		};
 
 		led_system_red {
-			pins = "gpio25";
+			pins = "gpio46";
 			function = "gpio";
 			drive-strength = <8>;
 			bias-pull-down;
 		};
 
-		led_internet_blue {
-			pins = "gpio26";
-			function = "gpio";
-			drive-strength = <8>;
-			bias-pull-down;
-		};
-
-		led_internet_red {
-			pins = "gpio27";
-			function = "gpio";
-			drive-strength = <8>;
-			bias-pull-down;
-		};
 	};
 
 	button_pins: button_pins {
 		button_reset {
-			pins = "gpio38";
+			pins = "gpio27";
 			function = "gpio";
 			drive-strength = <8>;
 			bias-pull-up;
 		};
 
 		button_mesh {
-			pins = "gpio28";
+			pins = "gpio38";
 			function = "gpio";
 			drive-strength = <8>;
 			bias-pull-up;
@@ -457,6 +444,14 @@
 			qcom,rx-page-mode = <0>;
 	};
 };
+
+
+
+
+
+
+
+
 
 
 &q6v5_wcss {
