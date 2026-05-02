@@ -15,13 +15,13 @@
 	aliases {
 		serial0 = &blsp1_uart1;
 
-		ethernet0 = &mac0;
-		ethernet1 = &mac1;
+		ethernet0 = "/soc/dp1";
+		ethernet1 = "/soc/dp2";
 
-		led-boot = &led_status_green;
-		led-failsafe = &led_status_green;
-		led-running = &led_status_green;
-		led-upgrade = &led_status_green;
+		led-boot = &led_system_green;
+		led-failsafe = &led_system_red;
+		led-running = &led_system_green;
+		led-upgrade = &led_system_red;
 	};
 
 	chosen {
@@ -31,12 +31,121 @@
 		stdout-path = "serial0:115200n8";
 	};
 
-	reserved-memory {
-		q6_mem_regions: q6_mem_regions@4b000000 {
-			no-map;
-			reg = <0x0 0x4b000000 0x0 0x5400000>;
-		};
-	};
+
+	
+    reserved-memory {
+        #address-cells = <0x00000002>;
+        #size-cells = <0x00000002>;
+        ranges;
+        nss@40000000 {
+            no-map;
+            reg = <0x00000000 0x40000000 0x00000000 0x01000000>;
+        };
+        uboot@4a800000 {
+            no-map;
+            reg = <0x00000000 0x4a800000 0x00000000 0x00200000>;
+        };
+        sbl@4aa00000 {
+            no-map;
+            reg = <0x00000000 0x4aa00000 0x00000000 0x00100000>;
+        };
+        smem@4ab00000 {
+            no-map;
+            reg = <0x00000000 0x4ab00000 0x00000000 0x00100000>;
+            linux,phandle = <0x00000013>;
+            phandle = <0x00000013>;
+        };
+        tz@4ac00000 {
+            no-map;
+            reg = <0x00000000 0x4ac00000 0x00000000 0x00400000>;
+        };
+        tzapp@4a400000 {
+            no-map;
+        };
+        bt@7000000 {
+            no-map;
+            reg = <0x00000000 0x07000000 0x00000000 0x00058000>;
+            linux,phandle = <0x00000027>;
+            phandle = <0x00000027>;
+        };
+        q6_mem_regions@4B000000 {
+            no-map;
+            reg = <0x00000000 0x4b000000 0x00000000 0x05400000>;
+            linux,phandle = <0x00000016>;
+            phandle = <0x00000016>;
+        };
+        q6_code_data@4B000000 {
+            no-map;
+            reg = <0x00000000 0x4b000000 0x00000000 0x00060000>;
+        };
+        q6_ipq5018_data@4C400000 {
+            no-map;
+            reg = <0x00000000 0x4c400000 0x00000000 0x00e00000>;
+            linux,phandle = <0x00000018>;
+            phandle = <0x00000018>;
+        };
+        m3_dump@4D200000 {
+            no-map;
+            reg = <0x00000000 0x4d200000 0x00000000 0x00100000>;
+            linux,phandle = <0x00000019>;
+            phandle = <0x00000019>;
+        };
+        q6_etr_dump@4D300000 {
+            no-map;
+            reg = <0x00000000 0x4d300000 0x00000000 0x00100000>;
+            linux,phandle = <0x0000001a>;
+            phandle = <0x0000001a>;
+        };
+        q6_caldb_region@4D400000 {
+            no-map;
+            reg = <0x00000000 0x4d400000 0x00000000 0x00200000>;
+            linux,phandle = <0x0000001b>;
+            phandle = <0x0000001b>;
+        };
+        q6_qcn6122_data1@4D600000 {
+            no-map;
+            reg = <0x00000000 0x4d600000 0x00000000 0x01000000>;
+        };
+        m3_dump_qcn6122_1@4E600000 {
+            no-map;
+            reg = <0x00000000 0x4e600000 0x00000000 0x00100000>;
+        };
+        q6_qcn6122_etr_1@4E700000 {
+            no-map;
+            reg = <0x00000000 0x4e700000 0x00000000 0x00100000>;
+        };
+        q6_qcn6122_caldb_1@4E800000 {
+            no-map;
+            reg = <0x00000000 0x4e800000 0x00000000 0x00500000>;
+        };
+        q6_qcn6122_data2@4E900000 {
+            no-map;
+            reg = <0x00000000 0x4ed00000 0x00000000 0x01000000>;
+            linux,phandle = <0x0000001c>;
+            phandle = <0x0000001c>;
+        };
+        m3_dump_qcn6122_2@4FD00000 {
+            no-map;
+            reg = <0x00000000 0x4fd00000 0x00000000 0x00100000>;
+            linux,phandle = <0x0000001d>;
+            phandle = <0x0000001d>;
+        };
+        q6_qcn6122_etr_2@4FE00000 {
+            no-map;
+            reg = <0x00000000 0x4fe00000 0x00000000 0x00100000>;
+            linux,phandle = <0x0000001e>;
+            phandle = <0x0000001e>;
+        };
+        q6_qcn6122_caldb_2@4FF00000 {
+            no-map;
+            reg = <0x00000000 0x4ff00000 0x00000000 0x00500000>;
+            linux,phandle = <0x0000001f>;
+            phandle = <0x0000001f>;
+        };
+    };
+	
+	
+	
 
 	thermal-zones {
 		status = "ok";
@@ -52,7 +161,7 @@
 		pins =
 			"gpio20", // RX
 			"gpio21"; // TX
-		function = "blsp0_uart1";
+		function = "blsp0_uart0";
 		drive-strength = <8>;
 		bias-disable;
 	};
@@ -97,16 +206,29 @@
 	};
 
 	leds_pins: leds_pins {
-			// led_2g
-		led_status_red {
-			pins = "gpio30";
+		led_system_blue {
+			pins = "gpio24";
 			function = "gpio";
 			drive-strength = <8>;
 			bias-pull-down;
 		};
-			// led_5g
-		led_status_green {
-			pins = "gpio46";
+
+		led_system_red {
+			pins = "gpio25";
+			function = "gpio";
+			drive-strength = <8>;
+			bias-pull-down;
+		};
+
+		led_internet_blue {
+			pins = "gpio26";
+			function = "gpio";
+			drive-strength = <8>;
+			bias-pull-down;
+		};
+
+		led_internet_red {
+			pins = "gpio27";
 			function = "gpio";
 			drive-strength = <8>;
 			bias-pull-down;
@@ -115,14 +237,14 @@
 
 	button_pins: button_pins {
 		button_reset {
-			pins = "gpio27";
+			pins = "gpio38";
 			function = "gpio";
 			drive-strength = <8>;
 			bias-pull-up;
 		};
 
 		button_mesh {
-			pins = "gpio38";
+			pins = "gpio28";
 			function = "gpio";
 			drive-strength = <8>;
 			bias-pull-up;
@@ -156,15 +278,18 @@
 		pinctrl-0 = <&leds_pins>;
 		pinctrl-names = "default";
 
-		led_status_red: led_status_red {
-			label = "red:system";
+		led_system_red: led_system_red {
+			label = "blue:system";
 			gpio = <&tlmm 30 GPIO_ACTIVE_HIGH>;
+			default-state = "on";
 		};
 
-		led_status_green: led_status_green {
-			label = "green:system";
+		led_system_green: led_system_green {
+			label = "red:system";
 			gpio = <&tlmm 46 GPIO_ACTIVE_HIGH>;
 		};
+
+
 	};
 
 	button {
@@ -174,7 +299,7 @@
 
 		button_reset {
 			label = "reset";
-			gpios = <&tlmm 27 GPIO_ACTIVE_LOW>;
+			gpios = <&tlmm 38 GPIO_ACTIVE_LOW>;
 			linux,input-type = <EV_KEY>;
 			linux,code = <KEY_RESTART>;
 			debounce-interval = <60>;
@@ -182,188 +307,157 @@
 
 		button_mesh {
 			label = "mesh";
-			gpios = <&tlmm 38 GPIO_ACTIVE_LOW>;
+			gpios = <&tlmm 28 GPIO_ACTIVE_LOW>;
 			linux,input-type = <EV_KEY>;
 			linux,code = <KEY_WPS_BUTTON>;
 			debounce-interval = <60>;
 		};
 	};
 
-	ess-instance {
-		num_devices = <2>;
 
-		// Dummy switch, to describe how the external ports connects to the MAC
-		// For example, some chips have PSGMII ports which combine 5 MAC into
-		// 1 external port.
-		// For IPQ50xx, this is used to choose SGMII or SGMII-plus
-		ess-switch@0x39c00000 {
-			compatible = "qcom,ess-switch-ipq50xx";
-			device_id = <0>;
-
-			cmnblk_clk = "internal_96MHz";
-
-			// MAC1 Mode
-			// switch_mac_mode = <0xc>; // PORT_WRAPPER_SGMII_PLUS
-			switch_mac_mode = <0xf>; // PORT_WRAPPER_SGMII_CHANNEL0
-
-			qcom,port_phyinfo {
-				// MAC0 -> GE Phy -> QCA8337 Phy4
-				port@0 {
-					port_id = <1>;
-
-					mdiobus = <&mdio0>;
-					phy_address = <7>;
-
-					phy_dac = <0x10 0x10>;
-				};
-
-				// MAC1 ---SGMII---> QCA8337 SerDes
-				port@1 {
-					port_id = <2>;
-
-					forced-speed = <1000>;
-					forced-duplex = <1>;
-				};
-			};
-		};
-
-		// QCA8337
-		ess-switch1@1 {
-			compatible = "qcom,ess-switch-qca83xx";
-			device_id = <1>;
-
-			reset_gpio = <27>;
-
-			switch_access_mode = "mdio";
-			mdio-bus = <&mdio1>;
-
-			qca,ar8327-initvals = <
-				0x000c 0x00000080  // PAD6_MODE = MAC6_SGMII_EN
-				0x0010 0x002613a0  // PWS_REG = DEFAULT_VALUE | SERDES_AEN
-				0x0094 0x0000004e  // PORT6_STATUS = DEFAULT_VALUE | DUPLEX_MODE_6 | RXMAC_EN_6 |
-						   //                TXMAC_EN_6 | SPEED_6(1000M)
-				0x00e0 0xc74164de  // SGMII_CTRL = DEFAULT_VALUE | MODE_CTRL_25M(SGMII_PHY) | SGMII_EN_SD |
-						   //              SGMII_EN_TX | SGMII_EN_RX | SGMII_EN_PLL
-			>;
-
-			switch_cpu_bmp = <0x40>;  // CPU port bitmap: 
-			switch_lan_bmp = <0x0e>;  // LAN port bitmap: 
-			switch_wan_bmp = <0x30>;  // WAN port bitmap: 
-
-			qcom,port_phyinfo {
+		mdio0: mdio@88000 {
+			status = "ok";
 			
-				// MAC1 -> Phy0 -> LAN3
-				port@0 {
-					port_id = <1>;
-					phy_address = <0>;
-				};
-
-				// MAC2 -> Phy1 -> LAN2
-				port@1 {
-					port_id = <2>;
-					phy_address = <1>;
-				};
-
-				// MAC3 -> Phy2 -> LAN1
-				port@2 {
-					port_id = <3>;
-					phy_address = <2>;
-				};
-
-				// MAC4 -> Phy3 -> WAN
-				port@3 {
-					port_id = <4>;
-					phy_address = <3>;
-				};
-
-				// MAC5 -> Phy4 -> IPQ5000 GE Phy
-				port@4 {
-					port_id = <5>;
-					phy_address = <4>;
-				};
-
+	       // IPQ5018 GE Phy -> 8337 Phy4
+			ethernet-phy@0 {
+				reg = <7>;
 			};
 		};
-	};
+		
+		mdio1: mdio@90000 {
+			status = "ok";
+			pinctrl-0 = <&mdio1_pins>;
+			pinctrl-names = "default";
+			phy-reset-gpio = <&tlmm 39 0>;
+			ethernet-phy@0 {
+				reg = <0>;
+			};
+
+			ethernet-phy@1 {
+				reg = <1>;
+			};
+
+			ethernet-phy@2 {
+				reg = <2>;
+			};
+
+			ethernet-phy@3 {
+				reg = <3>;
+			};			
+			
+			ethernet-phy@4 {
+				reg = <4>;
+			};
+		};
+		
+		
+		ess-instance {
+			num_devices = <0x2>;
+			ess-switch@0x39c00000 {
+				compatible = "qcom,ess-switch-ipq50xx";
+				device_id = <0>;
+				switch_mac_mode = <0xf>; /* mac mode for uniphy instance*/
+				cmnblk_clk = "internal_96MHz"; /* cmnblk clk*/
+				qcom,port_phyinfo {
+					port@0 {
+						port_id = <1>;
+						phy_address = <7>;
+					};
+					port@1 {
+						port_id = <2>;
+						forced-speed = <1000>;
+						forced-duplex = <1>;
+					};
+				};
+				led_source@0 {
+					source = <0>;
+					mode = "normal";
+					speed = "all";
+					blink_en = "enable";
+					active = "high";
+				};
+			};
+			ess-switch1@1 {
+				compatible = "qcom,ess-switch-qca83xx";
+				device_id = <1>;
+				switch_access_mode = "mdio";
+				mdio-bus = <&mdio1>;
+				reset_gpio = <&tlmm 0x27 0>;
+				switch_cpu_bmp = <0x40>;  /* cpu port bitmap */
+				switch_lan_bmp = <0x0e>; /* lan port bitmap */
+				switch_wan_bmp = <0x30>;  /* wan port bitmap */
+				qca,ar8327-initvals = <
+						0x00004 0x7600000   /* PAD0_MODE */
+						0x00008 0x1000000   /* PAD5_MODE */
+						0x0000c 0x80        /* PAD6_MODE */
+						0x00010 0x2613a0    /* PORT6 FORCE MODE*/
+						0x000e4 0xaa545     /* MAC_POWER_SEL */
+						0x000e0 0xc74164de  /* SGMII_CTRL */
+						0x0007c 0x4e        /* PORT0_STATUS */
+						0x00094 0x4e        /* PORT6_STATUS */
+				>;
+				qcom,port_phyinfo {
+					port@0 {
+						port_id = <1>;
+						phy_address = <0>;
+					};
+					port@1 {
+						port_id = <2>;
+						phy_address = <1>;
+					};
+					port@2 {
+						port_id = <3>;
+						phy_address = <2>;
+					};
+					port@3 {
+						port_id = <4>;
+						phy_address = <3>;
+					};
+					port@4 {
+						port_id = <5>;
+						phy_address = <4>;
+					};
+				};
+			};
+		};
+		
 
 	// MAC0 -> GE Phy
-	mac0: dp1 {
-		compatible = "qcom,nss-dp";
-		device_type = "network";
-		qcom,id = <1>;
-
-		reg = <0x39C00000 0x10000>;
-		interrupts = <GIC_SPI 101 IRQ_TYPE_LEVEL_HIGH>;
-		clocks = <&gcc GCC_SNOC_GMAC0_AXI_CLK>;
-		clock-names = "nss-snoc-gmac-axi-clk";
-
-		qcom,mactype = <2>; // GMAC_HAL_TYPE_SYN_GMAC
-		local-mac-address = [fc 8d 13 de d7 54];
-		mdio-bus = <&mdio0>;
-		qcom,phy-mdio-addr = <7>;
-		phy-mode = "internal";
-		qcom,link-poll = <1>;
+	 dp1 {
+	 
+			device_type = "network";
+			compatible = "qcom,nss-dp";
+			clocks = <&gcc GCC_SNOC_GMAC0_AXI_CLK>;
+			clock-names = "nss-snoc-gmac-axi-clk";
+			qcom,id = <1>;
+			reg = <0x39C00000 0x10000>;
+			interrupts = <GIC_SPI 101 IRQ_TYPE_LEVEL_HIGH>;
+			qcom,mactype = <2>; // GMAC_HAL_TYPE_SYN_GMAC
+			qcom,link-poll = <1>;
+			qcom,phy-mdio-addr = <7>;
+			mdio-bus = <&mdio0>;
+			local-mac-address = [000000000000];
+			phy-mode = "sgmii";
+			//phy-mode = "internal";
+			qcom,rx-page-mode = <0>;
 	};
 
-	// MAC1 ---SGMII---> QCA8337 SerDes
-	mac1: dp2 {
-		compatible = "qcom,nss-dp";
-		device_type = "network";
-		qcom,id = <2>;
-
-		reg = <0x39D00000 0x10000>;
-		interrupts = <GIC_SPI 109 IRQ_TYPE_LEVEL_HIGH>;
-		clocks = <&gcc GCC_SNOC_GMAC1_AXI_CLK>;
-		clock-names = "nss-snoc-gmac-axi-clk";
-
-		qcom,mactype = <2>; // GMAC_HAL_TYPE_SYN_GMAC
-		local-mac-address = [fc 8d 13 de d7 55];
-		phy-mode = "sgmii";
-	};
-};
-
-&mdio0 {
-	status = "ok";
-
-	// IPQ5018 GE Phy -> QCA8337 Phy4
-	ethernet-phy@0 {
-		reg = <7>;
+	// MAC1 ---SGMII---> 8337 SerDes
+	dp2 {
+			device_type = "network";
+			compatible = "qcom,nss-dp";
+			clocks = <&gcc GCC_SNOC_GMAC1_AXI_CLK>;
+			clock-names = "nss-snoc-gmac-axi-clk";
+			qcom,id = <2>;
+			reg = <0x39D00000 0x10000>;
+			interrupts = <GIC_SPI 109 IRQ_TYPE_LEVEL_HIGH>;
+			qcom,mactype = <2>;
+			local-mac-address = [000000000000];
+			phy-mode = "sgmii";
+			qcom,rx-page-mode = <0>;
 	};
 };
 
-&mdio1 {
-	pinctrl-0 = <&mdio1_pins>;
-	pinctrl-names = "default";
-							   
-	status = "ok";
-
-	reset-gpios = <&tlmm 26 GPIO_ACTIVE_LOW>;
-
-	// QCA8337 Phy0 -> LAN3
-	ethernet-phy@0 {
-		reg = <0>;
-	};
-
-	// QCA8337 Phy1 -> LAN2
-	ethernet-phy@1 {
-		reg = <1>;
-	};
-
-	// QCA8337 Phy2 -> LAN1
-	ethernet-phy@2 {
-		reg = <2>;
-	};
-
-	// QCA8337 Phy3 -> WAN
-	ethernet-phy@3 {
-		reg = <3>;
-	};
-
-	// QCA8337 Phy4 -> IPQ5018 GE Phy
-	ethernet-phy@4 {
-		reg = <4>;
-	};
-};
 
 &q6v5_wcss {
 	compatible = "qcom,ipq5018-q6-mpd";
@@ -410,10 +504,10 @@
 	firmware = "IPQ5018/q6_fw.mdt";
 
 	qcom,bootargs_smem = <507>;
-	boot-args = </*       type: */ 0x2 /* PCIE1 */
+	boot-args = </*       type: */ 0x1 /* PCIE1 */
 		     /*     length: */ 4
-		     /*      PD id: */ 2
-		     /* reset GPIO: */ 27
+		     /*      PD id: */ 3
+		     /* reset GPIO: */ 15
 		     /*   reserved: */ 0 0>;
 
 	status = "ok";
@@ -505,10 +599,16 @@
 	qcom,userpd-subsys-name = "q6v5_wcss_userpd1";
 
 	qcom,board_id = <0x24>;
-
-	qcom,bdf-addr = <0x4c400000 0x4c400000 0x4c400000>;
-	qcom,caldb-addr = <0x4d400000 0x4d400000 0>;
+    qcom,tgt-mem-mode = <0x1>;
+	qcom,bdf-addr = <0x4c400000 0x4c400000 0x4c400000 0x0 0x0 0x0>;
+	qcom,caldb-addr = <0x4d200000 0x4d200000 0x0 0x0 0x0 0x0>;
+	qcom,caldb-size = <0x00200000>;
+	
+#ifndef CONFIG_ATH11K_MEM_PROFILE_256M
+	m3-dump-addr = <0x4d400000>;
+#else
 	m3-dump-addr = <0>;
+#endif
 
 	status = "ok";
 };
@@ -520,10 +620,43 @@
 	qcom,userpd-subsys-name = "q6v5_wcss_userpd2";
 
 	qcom,board_id = <0x60>;
-
-	qcom,bdf-addr = <0x4ed00000 0x4ed00000 0x4e400000>;
-	qcom,caldb-addr = <0x4ff00000 0x4ff00000 0>;	
+    qcom,tgt-mem-mode = <0x1>;
+	qcom,bdf-addr = <0x4ed00000 0x4ed00000 0x4ed00000 0x0 0x0 0x0>;
+	qcom,caldb-addr = <0x4ff00000 0x4ff00000 0x0 0x0 0x0 0x0>;
+    qcom,caldb-size = <0x00500000>;
+	
+	
+#ifndef CONFIG_ATH11K_MEM_PROFILE_256M
+	m3-dump-addr = <0x4ea00000>;
+#else
 	m3-dump-addr = <0x4df00000>;
+	
+		/* QCN9000 tgt-mem-mode=1 layout - 26MB
+	 * +=========+==============+=========+
+	 * |  Region | Start Offset |   Size  |
+	 * +---------+--------------+---------+
+	 * | HREMOTE |  0x4CB00000  |   12MB  |
+	 * +---------+--------------+---------+
+	 * | M3 Dump |  0x4D700000  |   1MB   |
+	 * +---------+--------------+---------+
+	 * |   ETR   |  0x4D800000  |   1MB   |
+	 * +---------+--------------+---------+
+	 * |  Caldb  |  0x4D900000  |   8MB   |
+	 * +---------+--------------+---------+
+	 * | Pageable|  0x4E100000  |   4MB   |
+	 * +==================================+
+	 */
+	base-addr = <0x4CB00000>;
+	m3-dump-addr = <0x4df00000>;
+	etr-addr = <0x4D800000>;
+	caldb-addr = <0x4D900000>;
+	pageable-addr = <0x4E100000>;
+	caldb-size = <0x800000>;
+	hremote-size = <0xC00000>;
+	tgt-mem-mode = <0x1>;
+	pageable-size = <0x400000>;
+	
+#endif
 
 	status = "ok";
 };
