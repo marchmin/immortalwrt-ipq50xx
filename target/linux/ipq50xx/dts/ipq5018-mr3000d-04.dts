@@ -194,7 +194,7 @@
 
 		// Dummy switch, to describe how the external ports connects to the MAC
 		// For example, some chips have PSGMII ports which combine 5 MAC into
-		// 1 external port.
+		// 1 external port.  qq
 		// For IPQ50xx, this is used to choose SGMII or SGMII-plus
 		ess-switch@0x39c00000 {
 			compatible = "qcom,ess-switch-ipq50xx";
@@ -484,7 +484,6 @@
 			"stop",
 			"spawn";
 
-
 		firmware = "IPQ5018/q6_fw.mdt";
 		m3_firmware = "IPQ5018/m3_fw.mdt";
 		
@@ -519,6 +518,8 @@
 		m3_firmware = "qcn6122/m3_fw.mdt";
 	};
 };
+
+
 
 &wifi0 {
 	// IPQ5018
