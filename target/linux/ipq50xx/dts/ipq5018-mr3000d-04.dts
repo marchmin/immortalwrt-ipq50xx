@@ -315,8 +315,8 @@
 		local-mac-address = [fc 8d 13 de d7 54];
 		mdio-bus = <&mdio0>;
 		qcom,phy-mdio-addr = <7>;
-		//phy-mode = "internal";
-		phy-mode = "sgmii";
+		phy-mode = "internal";
+		//phy-mode = "sgmii";
 		qcom,link-poll = <1>;
 
 	};
@@ -340,14 +340,8 @@
 };
 
 &mdio0 {
+       status = "ok";
 
-            compatible = "qcom,qca-mdio", "qcom,ipq40xx-mdio";
-           // reg = <0x00088000 0x00000064>;
-            status = "ok";
-            //resets = <0x00000002 0x00000012>;
-           // reset-names = "gephy_mdc_rst";
-           // linux,phandle = <0x00000007>;
-           // phandle = <0x00000007>;
 			
 	// IPQ5018 GE Phy -> QCA8337 Phy4
 	ethernet-phy@0 {
