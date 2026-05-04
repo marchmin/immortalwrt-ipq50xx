@@ -93,4 +93,38 @@ define Device/xiaomi_cr881x
 endef
 TARGET_DEVICES += xiaomi_cr881x
 
+define Device/cmcc_mr3000d-04
+  $(call Device/FitImage)
+  $(call Device/UbiFit)
+  SOC := ipq5000
+  DEVICE_VENDOR := CMCC
+  DEVICE_MODEL := MR3000D-04
+  BLOCKSIZE := 128k
+  PAGESIZE := 2048
+  DEVICE_DTS_CONFIG := config@mp03.1-v1
+  IMAGES := nand-factory.ubi
+  DEVICE_PACKAGES := \
+	ath11k-firmware-ipq5018 \
+	ath11k-firmware-qcn6122 \
+	ipq-wifi-xiaomi_cr881x
+endef
+TARGET_DEVICES += cmcc_mr3000d-04
+
+define Device/cmcc_mr3000d-ci
+  $(call Device/FitImage)
+  $(call Device/UbiFit)
+  SOC := ipq5000
+  DEVICE_VENDOR := CMCC
+  DEVICE_MODEL := MR3000D-CI
+  BLOCKSIZE := 128k
+  PAGESIZE := 2048
+  DEVICE_DTS_CONFIG := config@mp03.1-v1
+  IMAGES := nand-factory.ubi
+  DEVICE_PACKAGES := \
+	ath11k-firmware-ipq5018 \
+	ath11k-firmware-qcn6122 \
+	ipq-wifi-xiaomi_cr881x
+endef
+TARGET_DEVICES += cmcc_mr3000d-ci
+
 $(eval $(call BuildImage))
