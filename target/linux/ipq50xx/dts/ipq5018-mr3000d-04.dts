@@ -35,8 +35,9 @@
  reserved-memory {
         q6_mem_regions: q6_mem_regions@4B000000 {
             no-map;
-            reg = <0x00000000 0x4b000000 0x00000000 0x05400000>;
+            reg = <0x0 0x4b000000 0x0 0x5400000>;
         };
+        
     };
 
 
@@ -247,14 +248,16 @@
 			switch_access_mode = "mdio";
 			mdio-bus = <&mdio1>;
 
-			qca,ar8327-initvals = <
-				0x000c 0x00000080  // PAD6_MODE = MAC6_SGMII_EN
-				0x0010 0x002613a0  // PWS_REG = DEFAULT_VALUE | SERDES_AEN
-				0x0094 0x0000004e  // PORT6_STATUS = DEFAULT_VALUE | DUPLEX_MODE_6 | RXMAC_EN_6 |
-						   //                TXMAC_EN_6 | SPEED_6(1000M)
-				0x00e0 0xc74164de  // SGMII_CTRL = DEFAULT_VALUE | MODE_CTRL_25M(SGMII_PHY) | SGMII_EN_SD |
-						   //              SGMII_EN_TX | SGMII_EN_RX | SGMII_EN_PLL
-			>;
+				qca,ar8327-initvals = <
+						0x00004 0x7600000   /* PAD0_MODE */
+						0x00008 0x1000000   /* PAD5_MODE */
+						0x0000c 0x80        /* PAD6_MODE */
+						0x00010 0x2613a0    /* PORT6 FORCE MODE*/
+						0x000e4 0xaa545     /* MAC_POWER_SEL */
+						0x000e0 0xc74164de  /* SGMII_CTRL */
+						0x0007c 0x4e        /* PORT0_STATUS */
+						0x00094 0x4e        /* PORT6_STATUS */
+				>;
 			
 
 			switch_cpu_bmp = <0x40>;  // CPU port bitmap: 
@@ -309,13 +312,13 @@
 		clock-names = "nss-snoc-gmac-axi-clk";
 
 		qcom,mactype = <2>; // GMAC_HAL_TYPE_SYN_GMAC
-		local-mac-address = [000000000000];
+		local-mac-address = [fc 8d 13 de d7 54];
 		mdio-bus = <&mdio0>;
 		qcom,phy-mdio-addr = <7>;
 		//phy-mode = "internal";
 		phy-mode = "sgmii";
 		qcom,link-poll = <1>;
-		qcom,rx-page-mode = <0>;
+
 	};
 
 	// MAC1 ---SGMII---> QCA8337 SerDes
@@ -330,19 +333,19 @@
 		clock-names = "nss-snoc-gmac-axi-clk";
 
 		qcom,mactype = <2>; // GMAC_HAL_TYPE_SYN_GMAC
-		local-mac-address = [000000000000];
+		local-mac-address = [fc 8d 13 de d7 55];
 		phy-mode = "sgmii";
-		qcom,rx-page-mode = <0>;
+
 	};
 };
 
 &mdio0 {
 
             compatible = "qcom,qca-mdio", "qcom,ipq40xx-mdio";
-            reg = <0x00088000 0x00000064>;
+           // reg = <0x00088000 0x00000064>;
             status = "ok";
-            resets = <0x00000002 0x00000012>;
-            reset-names = "gephy_mdc_rst";
+            //resets = <0x00000002 0x00000012>;
+           // reset-names = "gephy_mdc_rst";
            // linux,phandle = <0x00000007>;
            // phandle = <0x00000007>;
 			
@@ -495,8 +498,10 @@
 			"stop",
 			"spawn";
 
+
 		firmware = "IPQ5018/q6_fw.mdt";
 		m3_firmware = "IPQ5018/m3_fw.mdt";
+		
 	};
 
 	// QCN6102
@@ -522,6 +527,7 @@
 			"shutdown",
 			"stop",
 			"spawn";
+			
 
 		firmware = "IPQ5018/q6_fw.mdt";
 		m3_firmware = "qcn6122/m3_fw.mdt";
