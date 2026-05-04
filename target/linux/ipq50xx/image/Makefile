@@ -1,132 +1,564 @@
-include $(TOPDIR)/rules.mk
-include $(INCLUDE_DIR)/image.mk
+// SPDX-License-Identifier: (GPL-2.0+)
 
-ifeq ($(SUBTARGET),arm)
-  KERNEL_LOADADDR := 0x41208000
-  DTS_CPPFLAGS-y += -D__ARM32__
-else
-  KERNEL_LOADADDR := 0x41080000
-  DTS_CPPFLAGS-y += -D__AARCH64__
-endif
+/dts-v1/;
 
-DTS_CPPFLAGS-y += -D__IPQ_MEM_PROFILE_256_MB__
-DTS_CPPFLAGS-$(CONFIG_ATH11K_MEM_PROFILE_256M) += -DCONFIG_ATH11K_MEM_PROFILE_256M
+#include "ipq5018.dtsi"
 
-define Device/Default
-  PROFILES := Default
-  DEVICE_DTS_DIR := ../dts
-  DEVICE_DTS = $$(SOC)-$(lastword $(subst _, ,$(1)))
-  DTS_CPPFLAGS += $(DTS_CPPFLAGS-y)
-  IMAGES := sysupgrade.tar
-  IMAGE/sysupgrade.tar := sysupgrade-tar | append-metadata
-endef
+/ {
+	model = "CMCC MR3000D-04";
+	compatible = "cmcc,mr3000d-04", "qcom,ipq5018";
 
-define Device/FitImage
-  KERNEL_SUFFIX := -fit-uImage.itb
-  KERNEL = kernel-bin | lzma | fit lzma $$(KDIR)/image-$$(DEVICE_DTS).dtb
-  KERNEL_NAME := Image
-endef
+	#address-cells = <2>;
+	#size-cells = <2>;
+	interrupt-parent = <&intc>;
 
-define Device/UbiFit
-  KERNEL_IN_UBI := 1
-  IMAGES := nand-factory.ubi nand-sysupgrade.bin
-  IMAGE/nand-factory.ubi := append-ubi
-  IMAGE/nand-sysupgrade.bin := sysupgrade-tar | append-metadata
-endef
+	aliases {
+		serial0 = &blsp1_uart1;
 
-define Device/cmcc_rax3000q
-  $(call Device/FitImage)
-  $(call Device/UbiFit)
-  SOC := ipq5000
-  DEVICE_VENDOR := CMCC
-  DEVICE_MODEL := RAX3000Q
-  BLOCKSIZE := 128k
-  PAGESIZE := 2048
-  DEVICE_DTS_CONFIG := config@mp03.3-v1
-  IMAGES := nand-factory.ubi
-  DEVICE_PACKAGES := \
-	ath11k-firmware-ipq5018 \
-	ath11k-firmware-qcn6122 \
-	ipq-wifi-cmcc_rax3000q
-endef
-TARGET_DEVICES += cmcc_rax3000q
+		ethernet0 = &mac0;
+		ethernet1 = &mac1;
 
-define Device/redmi_ax3000
-  $(call Device/FitImage)
-  $(call Device/UbiFit)
-  SOC := ipq5000
-  DEVICE_VENDOR := Redmi
-  DEVICE_MODEL := AX3000
-  DEVICE_ALT0_VENDOR := Xiaomi
-  DEVICE_ALT0_MODEL := CR880x
-  DEVICE_ALT0_VARIANT := (M81 version)
-  DEVICE_ALT1_VENDOR := Xiaomi
-  DEVICE_ALT1_MODEL := CR880x
-  DEVICE_ALT1_VARIANT := (M79 version)
-  BLOCKSIZE := 128k
-  PAGESIZE := 2048
-  DEVICE_DTS_CONFIG := config@mp03.3-v1
-  IMAGES := nand-factory.ubi
-  DEVICE_PACKAGES := \
-	ATH11K_MEM_PROFILE_256M \
-	ath11k-firmware-ipq5018 \
-	ath11k-firmware-qcn6122 \
-	ipq-wifi-redmi_ax3000
-endef
-TARGET_DEVICES += redmi_ax3000
+		led-boot = &led_status_green;
+		led-failsafe = &led_status_green;
+		led-running = &led_status_green;
+		led-upgrade = &led_status_green;
+	};
 
-define Device/xiaomi_cr881x
-  $(call Device/FitImage)
-  $(call Device/UbiFit)
-  SOC := ipq5018
-  DEVICE_VENDOR := Xiaomi
-  DEVICE_MODEL := CR881x
-  BLOCKSIZE := 128k
-  PAGESIZE := 2048
-  DEVICE_DTS_CONFIG := config@mp03.3-v1
-  IMAGES := nand-factory.ubi
-  DEVICE_PACKAGES := \
-	ATH11K_MEM_PROFILE_256M \
-	ath11k-firmware-ipq5018 \
-	ath11k-firmware-qcn6122 \
-	ipq-wifi-xiaomi_cr881x
-endef
-TARGET_DEVICES += xiaomi_cr881x
+	chosen {
+		// Override the root parameter from u-boot
+		// Increase coherent_pool size for WiFi
+		bootargs-append = " root=/dev/ubiblock0_1 coherent_pool=2M";
+		stdout-path = "serial0:115200n8";
+	};
 
-define Device/cmcc_mr3000d-04
-  $(call Device/FitImage)
-  $(call Device/UbiFit)
-  SOC := ipq5018
-  DEVICE_VENDOR := CMCC
-  DEVICE_MODEL := MR3000D-04
-  BLOCKSIZE := 128k
-  PAGESIZE := 2048
-  DEVICE_DTS_CONFIG := config@mp03.3-v1
-  IMAGES := nand-factory.ubi
-  DEVICE_PACKAGES := \
-	ATH11K_MEM_PROFILE_512M \
-	ath11k-firmware-ipq5018 \
-	ath11k-firmware-qcn6122 \
-	ipq-wifi-xiaomi_cr881x
-endef
-TARGET_DEVICES += cmcc_mr3000d-04
+	reserved-memory {
+		q6_mem_regions: q6_mem_regions@4b000000 {
+			no-map;
+			reg = <0x0 0x4b000000 0x0 0x5400000>;
+		};
+	};
 
-define Device/cmcc_mr3000d-ci
-  $(call Device/FitImage)
-  $(call Device/UbiFit)
-  SOC := ipq5018
-  DEVICE_VENDOR := CMCC
-  DEVICE_MODEL := MR3000D-CI
-  BLOCKSIZE := 128k
-  PAGESIZE := 2048
-  DEVICE_DTS_CONFIG := config@mp03.3-v1
-  IMAGES := nand-factory.ubi
-  DEVICE_PACKAGES := \
-	ATH11K_MEM_PROFILE_512M \
-	ath11k-firmware-ipq5018 \
-	ath11k-firmware-qcn6122 \
-	ipq-wifi-xiaomi_cr881x
-endef
-TARGET_DEVICES += cmcc_mr3000d-ci
+	thermal-zones {
+		status = "ok";
+	};
+};
 
-$(eval $(call BuildImage))
+&tmc_etr {
+	/delete-property/ memory-region;
+};
+
+&tlmm {
+	blsp_uart0_pins: blsp_uart0_pins {
+		pins =
+			"gpio20", // RX
+			"gpio21"; // TX
+		function = "blsp1_uart1";
+		drive-strength = <8>;
+		bias-disable;
+	};
+
+	qspi_nand_pins: qspi_nand_pins {
+		clock {
+			pins = "gpio9";
+			function = "qspi_clk";
+			drive-strength = <8>;
+			bias-disable;
+		};
+
+		cs {
+			pins = "gpio8";
+			function = "qspi_cs";
+			drive-strength = <8>;
+			bias-disable;
+		};
+
+		data {
+			pins = "gpio7", "gpio6", "gpio5", "gpio4";
+			function = "qspi_data";
+			drive-strength = <8>;
+			bias-disable;
+		};
+	};
+
+	mdio1_pins: mdio1_pins {
+		mdc {
+			pins = "gpio36";
+			function = "mdc";
+			drive-strength = <8>;
+			bias-pull-up;
+		};
+
+		mdio {
+			pins = "gpio37";
+			function = "mdio";
+			drive-strength = <8>;
+			bias-pull-up;
+		};
+	};
+
+	leds_pins: leds_pins {
+			// led_2g
+		led_status_red {
+			pins = "gpio30";
+			function = "gpio";
+			drive-strength = <8>;
+			bias-pull-down;
+		};
+			// led_5g
+		led_status_green {
+			pins = "gpio46";
+			function = "gpio";
+			drive-strength = <8>;
+			bias-pull-down;
+		};
+	};
+
+	button_pins: button_pins {
+		button_reset {
+			pins = "gpio27";
+			function = "gpio";
+			drive-strength = <8>;
+			bias-pull-up;
+		};
+
+		button_mesh {
+			pins = "gpio38";
+			function = "gpio";
+			drive-strength = <8>;
+			bias-pull-up;
+		};
+	};
+};
+
+&blsp1_uart1 {
+	pinctrl-0 = <&blsp_uart0_pins>;
+	pinctrl-names = "default";
+	status = "ok";
+};
+
+&qpic_bam {
+	status = "ok";
+};
+
+&nand {
+	pinctrl-0 = <&qspi_nand_pins>;
+	pinctrl-names = "default";
+	status = "ok";
+};
+
+&tsens {
+	status = "ok";
+};
+
+&soc {
+	leds {
+		compatible = "gpio-leds";
+		pinctrl-0 = <&leds_pins>;
+		pinctrl-names = "default";
+
+		led_status_red: led_status_red {
+			label = "red:system";
+			gpio = <&tlmm 30 GPIO_ACTIVE_HIGH>;
+		};
+
+		led_status_green: led_status_green {
+			label = "green:system";
+			gpio = <&tlmm 46 GPIO_ACTIVE_HIGH>;
+		};
+	};
+
+	button {
+		compatible = "gpio-keys";
+		pinctrl-0 = <&button_pins>;
+		pinctrl-names = "default";
+
+		button_reset {
+			label = "reset";
+			gpios = <&tlmm 27 GPIO_ACTIVE_LOW>;
+			linux,input-type = <EV_KEY>;
+			linux,code = <KEY_RESTART>;
+			debounce-interval = <60>;
+		};
+
+		button_mesh {
+			label = "mesh";
+			gpios = <&tlmm 38 GPIO_ACTIVE_LOW>;
+			linux,input-type = <EV_KEY>;
+			linux,code = <KEY_WPS_BUTTON>;
+			debounce-interval = <60>;
+		};
+	};
+
+	ess-instance {
+		num_devices = <2>;
+
+		// Dummy switch, to describe how the external ports connects to the MAC
+		// For example, some chips have PSGMII ports which combine 5 MAC into
+		// 1 external port.
+		// For IPQ50xx, this is used to choose SGMII or SGMII-plus
+		ess-switch@0x39c00000 {
+			compatible = "qcom,ess-switch-ipq50xx";
+			device_id = <0>;
+
+			cmnblk_clk = "internal_96MHz";
+
+			// MAC1 Mode
+			// switch_mac_mode = <0xc>; // PORT_WRAPPER_SGMII_PLUS
+			switch_mac_mode = <0xf>; // PORT_WRAPPER_SGMII_CHANNEL0
+
+			qcom,port_phyinfo {
+				// MAC0 -> GE Phy -> QCA8337 Phy4
+				port@0 {
+					port_id = <1>;
+
+					mdiobus = <&mdio0>;
+					phy_address = <7>;
+
+					phy_dac = <0x10 0x10>;
+				};
+
+				// MAC1 ---SGMII---> QCA8337 SerDes
+				port@1 {
+					port_id = <2>;
+
+					forced-speed = <1000>;
+					forced-duplex = <1>;
+				};
+			};
+			led_source@0 {
+				source = <0>;
+				mode = "normal";
+				speed = "all";
+				blink_en = "enable";
+				active = "high";
+			};
+		};
+
+		// QCA8337
+		ess-switch1@1 {
+			compatible = "qcom,ess-switch-qca83xx";
+			device_id = <1>;
+
+			reset_gpio = <&tlmm 0x27 0>;
+
+			switch_access_mode = "mdio";
+			mdio-bus = <&mdio1>;
+
+				qca,ar8327-initvals = <
+						0x00004 0x7600000   /* PAD0_MODE */
+						0x00008 0x1000000   /* PAD5_MODE */
+						0x0000c 0x80        /* PAD6_MODE */
+						0x00010 0x2613a0    /* PORT6 FORCE MODE*/
+						0x000e4 0xaa545     /* MAC_POWER_SEL */
+						0x000e0 0xc74164de  /* SGMII_CTRL */
+						0x0007c 0x4e        /* PORT0_STATUS */
+						0x00094 0x4e        /* PORT6_STATUS */
+				>;
+			
+
+			switch_cpu_bmp = <0x40>;  // CPU port bitmap: 
+			switch_lan_bmp = <0x0e>;  // LAN port bitmap: 
+			switch_wan_bmp = <0x30>;  // WAN port bitmap: 
+
+			qcom,port_phyinfo {
+			
+				// MAC1 -> Phy0 -> LAN3
+				port@0 {
+					port_id = <1>;
+					phy_address = <0>;
+				};
+
+				// MAC2 -> Phy1 -> LAN2
+				port@1 {
+					port_id = <2>;
+					phy_address = <1>;
+				};
+
+				// MAC3 -> Phy2 -> LAN1
+				port@2 {
+					port_id = <3>;
+					phy_address = <2>;
+				};
+
+				// MAC4 -> Phy3 -> WAN
+				port@3 {
+					port_id = <4>;
+					phy_address = <3>;
+				};
+
+				// MAC5 -> Phy4 -> IPQ5018 GE Phy
+				port@4 {
+					port_id = <5>;
+					phy_address = <4>;
+				};
+
+			};
+		};
+	};
+
+	// MAC0 -> GE Phy
+	mac0: dp1 {
+		compatible = "qcom,nss-dp";
+		device_type = "network";
+		qcom,id = <1>;
+
+		reg = <0x39C00000 0x10000>;
+		interrupts = <GIC_SPI 101 IRQ_TYPE_LEVEL_HIGH>;
+		clocks = <&gcc GCC_SNOC_GMAC0_AXI_CLK>;
+		clock-names = "nss-snoc-gmac-axi-clk";
+
+		qcom,mactype = <2>; // GMAC_HAL_TYPE_SYN_GMAC
+		local-mac-address = [fc 8d 13 de d7 54];
+		mdio-bus = <&mdio0>;
+		qcom,phy-mdio-addr = <7>;
+		phy-mode = "internal";
+		qcom,link-poll = <1>;
+	};
+
+	// MAC1 ---SGMII---> QCA8337 SerDes
+	mac1: dp2 {
+		compatible = "qcom,nss-dp";
+		device_type = "network";
+		qcom,id = <2>;
+
+		reg = <0x39D00000 0x10000>;
+		interrupts = <GIC_SPI 109 IRQ_TYPE_LEVEL_HIGH>;
+		clocks = <&gcc GCC_SNOC_GMAC1_AXI_CLK>;
+		clock-names = "nss-snoc-gmac-axi-clk";
+
+		qcom,mactype = <2>; // GMAC_HAL_TYPE_SYN_GMAC
+		local-mac-address = [fc 8d 13 de d7 55];
+		phy-mode = "sgmii";
+
+	};
+};
+
+&mdio0 {
+       status = "ok";			
+	// IPQ5018 GE Phy -> QCA8337 Phy4
+	ethernet-phy@0 {
+		reg = <7>;
+	};
+};
+
+&mdio1 {
+	pinctrl-0 = <&mdio1_pins>;
+	pinctrl-names = "default";
+	compatible = "qcom,qca-mdio";
+								
+	status = "ok";
+
+	reset-gpios = <&tlmm 39 GPIO_ACTIVE_LOW>;
+	
+
+	// QCA8337 Phy0 -> LAN3
+	ethernet-phy@0 {
+		reg = <0>;
+	};
+
+	// QCA8337 Phy1 -> LAN2
+	ethernet-phy@1 {
+		reg = <1>;
+	};
+
+	// QCA8337 Phy2 -> LAN1
+	ethernet-phy@2 {
+		reg = <2>;
+	};
+
+	// QCA8337 Phy3 -> WAN
+	ethernet-phy@3 {
+		reg = <3>;
+	};
+
+	// QCA8337 Phy4 -> IPQ5018 GE Phy
+	ethernet-phy@4 {
+		reg = <4>;
+	};
+};
+
+&usb3 {
+	qcom,multiplexed-phy;
+	qcom,phy-mux-regs = <&tcsr_q6_block 0x2540>;
+	device-power-gpio = <&tlmm 24 1>;
+	status = "ok";
+};
+
+&q6v5_wcss {
+	compatible = "qcom,ipq5018-q6-mpd";
+	#address-cells = <1>;
+	#size-cells = <1>;
+	ranges;
+
+	resets =
+		<&gcc GCC_WCSSAON_RESET>,
+		<&gcc GCC_WCSS_Q6_BCR>;
+	reset-names =
+		"wcss_aon_reset",
+		"wcss_q6_reset";
+
+	clocks =
+		<&gcc GCC_Q6_AXIS_CLK>,
+		<&gcc GCC_WCSS_ECAHB_CLK>,
+		<&gcc GCC_Q6_AXIM_CLK>,
+		<&gcc GCC_Q6_AXIM2_CLK>,
+		<&gcc GCC_Q6_AHB_CLK>,
+		<&gcc GCC_Q6_AHB_S_CLK>,
+		<&gcc GCC_WCSS_AXI_S_CLK>;
+	clock-names =
+		"gcc_q6_axis_clk",
+		"gcc_wcss_ecahb_clk",
+		"gcc_q6_axim_clk",
+		"gcc_q6_axim2_clk",
+		"gcc_q6_ahb_clk",
+		"gcc_q6_ahb_s_clk",
+		"gcc_wcss_axi_s_clk";
+
+	reg =
+		<0x0cd00000 0x4040>,
+		<0x1938000 0x8>,
+		<0x193d204 0x4>;
+	reg-names =
+		"qdsp6",
+		"tcsr-msip",
+		"tcsr-q6";
+
+	memory-region = <&q6_mem_regions>;
+
+	qcom,rproc = <&q6v5_wcss>;
+	firmware = "IPQ5018/q6_fw.mdt";
+
+	qcom,bootargs_smem = <507>;
+	boot-args = </*       type: */ 0x1 /* PCIE1 */
+		     /*     length: */ 4
+		     /*      PD id: */ 3
+		     /* reset GPIO: */ 15
+		     /*   reserved: */ 0 0>;
+
+	status = "ok";
+
+	// IPQ5018
+	q6_wcss_pd1: remoteproc_pd1@4ab000 {
+		compatible = "qcom,ipq5018-wcss-ahb-mpd";
+
+		resets =
+			<&gcc GCC_WCSSAON_RESET>,
+			<&gcc GCC_WCSS_BCR>,
+			<&gcc GCC_CE_BCR>;
+		reset-names =
+			"wcss_aon_reset",
+			"wcss_reset",
+			"ce_reset";
+
+		clocks =
+			<&gcc GCC_WCSS_AHB_S_CLK>,
+			<&gcc GCC_WCSS_ACMT_CLK>,
+			<&gcc GCC_WCSS_AXI_M_CLK>;
+		clock-names =
+			"gcc_wcss_ahb_s_clk",
+					"gcc_wcss_acmt_clk",
+					"gcc_wcss_axi_m_clk";
+
+		reg = <0x4ab000 0x20>;
+		reg-names = "rmb";
+
+		qcom,halt-regs = <&tcsr_q6_block 0xa000 0xd000 0x0>;
+
+		interrupts-extended =
+			<&wcss_smp2p_in 8 0>,
+			<&wcss_smp2p_in 9 0>,
+			<&wcss_smp2p_in 12 0>,
+			<&wcss_smp2p_in 11 0>;
+		interrupt-names =
+			"fatal",
+			"ready",
+			"spawn-ack",
+			"stop-ack";
+
+		qcom,smem-states =
+			<&wcss_smp2p_out 8>,
+			<&wcss_smp2p_out 9>,
+			<&wcss_smp2p_out 10>;
+		qcom,smem-state-names =
+			"shutdown",
+			"stop",
+			"spawn";
+
+
+		firmware = "IPQ5018/q6_fw.mdt";
+		m3_firmware = "IPQ5018/m3_fw.mdt";
+		
+	};
+
+	// QCN6102
+	q6_wcss_pd2: remoteproc_pd2 {
+		compatible = "qcom,ipq5018-wcss-pcie-mpd";
+
+		interrupts-extended =
+			<&wcss_smp2p_in 16 0>,
+			<&wcss_smp2p_in 17 0>,
+			<&wcss_smp2p_in 20 0>,
+			<&wcss_smp2p_in 19 0>;
+		interrupt-names =
+			"fatal",
+			"ready",
+			"spawn-ack",
+			"stop-ack";
+
+		qcom,smem-states =
+			<&wcss_smp2p_out 16>,
+			<&wcss_smp2p_out 17>,
+			<&wcss_smp2p_out 18>;
+		qcom,smem-state-names =
+			"shutdown",
+			"stop",
+			"spawn";
+			
+
+		firmware = "IPQ5018/q6_fw.mdt";
+		m3_firmware = "qcn6122/m3_fw.mdt";
+	};
+};
+
+&wifi0 {
+	// IPQ5018
+	qcom,multipd_arch;
+	qcom,rproc = <&q6_wcss_pd1>;
+	qcom,userpd-subsys-name = "q6v5_wcss_userpd1";
+
+	qcom,board_id = <0x24>;
+    qcom,tgt-mem-mode = <0x1>;
+	qcom,bdf-addr = <0x4c400000 0x4c400000 0x4c400000 0x0 0x0 0x0>;
+	qcom,caldb-addr = <0x4d200000 0x4d200000 0x0 0x0 0x0 0x0>;
+	qcom,caldb-size = <0x00200000>;
+	
+#ifndef CONFIG_ATH11K_MEM_PROFILE_256M
+	m3-dump-addr = <0x4d400000>;
+#else
+	m3-dump-addr = <0>;
+#endif
+
+	status = "ok";
+};
+
+&wifi1 {
+	// QCN6102
+	qcom,multipd_arch;
+	qcom,rproc = <&q6_wcss_pd2>;
+	qcom,userpd-subsys-name = "q6v5_wcss_userpd2";
+
+	qcom,board_id = <0x60>;
+    qcom,tgt-mem-mode = <0x1>;
+	qcom,bdf-addr = <0x4ed00000 0x4ed00000 0x4ed00000 0x0 0x0 0x0>;
+	qcom,caldb-addr = <0x4ff00000 0x4ff00000 0x0 0x0 0x0 0x0>;
+    qcom,caldb-size = <0x00500000>;
+	
+	
+#ifndef CONFIG_ATH11K_MEM_PROFILE_256M
+	m3-dump-addr = <0x4ea00000>;
+#else
+	m3-dump-addr = <0x4df00000>;
+#endif
+
+	status = "ok";
+};
