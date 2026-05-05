@@ -101,7 +101,7 @@ define Device/cmcc_mr3000d-04
   DEVICE_MODEL := MR3000D-04
   BLOCKSIZE := 128k
   PAGESIZE := 2048
-  DEVICE_DTS_CONFIG := config@mp03.1-v1
+  DEVICE_DTS_CONFIG := config@mp03.3-v1
   IMAGES := nand-factory.ubi
   DEVICE_PACKAGES := \
 	ath11k-firmware-ipq5018 \
@@ -118,7 +118,7 @@ define Device/cmcc_mr3000d-ci
   DEVICE_MODEL := MR3000D-CI
   BLOCKSIZE := 128k
   PAGESIZE := 2048
-  DEVICE_DTS_CONFIG := config@mp03.1-v1
+  DEVICE_DTS_CONFIG := config@mp03.3-v1
   IMAGES := nand-factory.ubi
   DEVICE_PACKAGES := \
 	ath11k-firmware-ipq5018 \
