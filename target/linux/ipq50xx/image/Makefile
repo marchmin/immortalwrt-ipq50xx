@@ -96,7 +96,7 @@ TARGET_DEVICES += xiaomi_cr881x
 define Device/cmcc_mr3000d-04
   $(call Device/FitImage)
   $(call Device/UbiFit)
-  SOC := ipq5000
+  SOC := ipq5018
   DEVICE_VENDOR := CMCC
   DEVICE_MODEL := MR3000D-04
   BLOCKSIZE := 128k
@@ -113,7 +113,7 @@ TARGET_DEVICES += cmcc_mr3000d-04
 define Device/cmcc_mr3000d-ci
   $(call Device/FitImage)
   $(call Device/UbiFit)
-  SOC := ipq5000
+  SOC := ipq5018
   DEVICE_VENDOR := CMCC
   DEVICE_MODEL := MR3000D-CI
   BLOCKSIZE := 128k
