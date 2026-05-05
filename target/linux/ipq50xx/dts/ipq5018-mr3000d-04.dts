@@ -348,8 +348,8 @@
 								
 	status = "ok";
 
-	reset-gpios = <&tlmm 39 GPIO_ACTIVE_LOW>;
-	
+	//reset-gpios = <&tlmm 39 GPIO_ACTIVE_LOW>;
+	phy-reset-gpio = <&tlmm 39 0>;
 
 	// QCA8337 Phy0 -> LAN3
 	ethernet-phy@0 {
