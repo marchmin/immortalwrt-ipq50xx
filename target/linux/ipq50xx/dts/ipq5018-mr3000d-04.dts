@@ -338,7 +338,6 @@
 };
 
 &mdio0 {
-			   
 
             compatible = "qcom,qca-mdio", "qcom,ipq40xx-mdio";
            // reg = <0x00088000 0x00000064>;
@@ -551,7 +550,7 @@
 	m3-dump-addr = <0>;
 #endif
 
-	status = "disabled";
+	status = "ok";
 };
 
 &wifi1 {
@@ -573,5 +572,5 @@
 	m3-dump-addr = <0x4df00000>;
 #endif
 
-	status = "disabled";
+	status = "ok";
 };
