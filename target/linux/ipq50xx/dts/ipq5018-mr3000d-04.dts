@@ -13,7 +13,7 @@
 	interrupt-parent = <&intc>;
 
 	aliases {
-		serial0 = &blsp1_uart1;
+		serial0 = &blsp0_uart1;
 
 		ethernet0 = &mac0;
 		ethernet1 = &mac1;
@@ -550,7 +550,7 @@
 	m3-dump-addr = <0>;
 #endif
 
-	status = "ok";
+	status = "disabled";
 };
 
 &wifi1 {
@@ -572,5 +572,5 @@
 	m3-dump-addr = <0x4df00000>;
 #endif
 
-	status = "ok";
+	status = "disabled";
 };
