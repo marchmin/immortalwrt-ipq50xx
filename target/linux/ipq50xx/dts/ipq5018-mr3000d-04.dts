@@ -246,7 +246,6 @@
 
 			switch_access_mode = "mdio";
 			mdio-bus = <&mdio1>;
-
 			qca,ar8327-initvals = <
 				0x000c 0x00000080  // PAD6_MODE = MAC6_SGMII_EN
 				0x0010 0x002613a0  // PWS_REG = DEFAULT_VALUE | SERDES_AEN
@@ -338,9 +337,7 @@
 };
 
 &mdio0 {
-			   
-            compatible = "qcom,qca-mdio", "qcom,ipq40xx-mdio";
-            status = "ok";
+     status = "ok";
 			
 	// IPQ5018 GE Phy -> QCA8337 Phy4
 	ethernet-phy@0 {
@@ -355,8 +352,8 @@
 								
 	status = "ok";
 
-	reset-gpio = <&tlmm 39 GPIO_ACTIVE_LOW>;
-	phy-reset-gpio = <&tlmm 39 0>;
+	reset-gpios = <&tlmm 39 GPIO_ACTIVE_LOW>;
+
 
 	// QCA8337 Phy0 -> LAN3
 	ethernet-phy@0 {
@@ -438,9 +435,9 @@
 	qcom,bootargs_smem = <507>;
 	boot-args = </*       type: */ 0x1 /* PCIE1 */
 		     /*     length: */ 4
-		     /*      PD id: */ 3
+		     /*      PD id: */ 2
 		     /* reset GPIO: */ 15
-		     /*   reserved: */ 0 0>;
+		     /*   reserved: */ 0 0>;;
 
 	status = "ok";
 
@@ -539,9 +536,7 @@
 	qcom,caldb-addr = <0x4d200000 0x4d200000 0x0 0x0 0x0 0x0>;
 	qcom,caldb-size = <0x00200000>;
 
-													
-											 
-	m3-dump-addr = <0x4d400000>;
+																								 
 
 	status = "ok";
 };
@@ -560,8 +555,6 @@
 	
 	
 
-													
-											  
 	m3-dump-addr = <0x4df00000>;
 
 
