@@ -210,7 +210,7 @@
 			switch_mac_mode = <0xf>; // PORT_WRAPPER_SGMII_CHANNEL0
 
 			qcom,port_phyinfo {
-				// MAC0 -> GE Phy -> QCA8337 Phy4
+				// MAC0 -> GE Phy -> QCA8337 Phy4  WAN
 				port@0 {
 					port_id = <1>;
 
@@ -242,21 +242,21 @@
 			compatible = "qcom,ess-switch-qca83xx";
 			device_id = <1>;
 
-			reset-gpios = <&tlmm 39 GPIO_ACTIVE_LOW>;
+			reset-gpio = <&tlmm 39 GPIO_ACTIVE_LOW>;
 
 			switch_access_mode = "mdio";
 			mdio-bus = <&mdio1>;
 
-				qca,ar8327-initvals = <
-						0x00004 0x7600000   /* PAD0_MODE */
-						0x00008 0x1000000   /* PAD5_MODE */
-						0x0000c 0x80        /* PAD6_MODE */
-						0x00010 0x2613a0    /* PORT6 FORCE MODE*/
-						0x000e4 0xaa545     /* MAC_POWER_SEL */
-						0x000e0 0xc74164de  /* SGMII_CTRL */
-						0x0007c 0x4e        /* PORT0_STATUS */
-						0x00094 0x4e        /* PORT6_STATUS */
-				>;
+			qca,ar8327-initvals = <
+				0x000c 0x00000080  // PAD6_MODE = MAC6_SGMII_EN
+				0x0010 0x002613a0  // PWS_REG = DEFAULT_VALUE | SERDES_AEN
+				0x0094 0x0000004e  // PORT6_STATUS = DEFAULT_VALUE | DUPLEX_MODE_6 | RXMAC_EN_6 |
+						   //                TXMAC_EN_6 | SPEED_6(1000M)
+				0x00e0 0xc74164de  // SGMII_CTRL = DEFAULT_VALUE | MODE_CTRL_25M(SGMII_PHY) | SGMII_EN_SD |
+						   //              SGMII_EN_TX | SGMII_EN_RX | SGMII_EN_PLL
+											
+											
+			>;
 			
 
 			switch_cpu_bmp = <0x40>;  // CPU port bitmap: 
@@ -299,7 +299,7 @@
 		};
 	};
 
-	// MAC0 -> GE Phy
+	// MAC0 -> GE Phy -> WAN
 	mac0: dp1 {
 		compatible = "qcom,nss-dp";
 		device_type = "network";
@@ -539,6 +539,8 @@
 	qcom,caldb-addr = <0x4d200000 0x4d200000 0x0 0x0 0x0 0x0>;
 	qcom,caldb-size = <0x00200000>;
 
+													
+											 
 	m3-dump-addr = <0x4d400000>;
 
 	status = "ok";
@@ -558,6 +560,8 @@
 	
 	
 
+													
+											  
 	m3-dump-addr = <0x4df00000>;
 
 
