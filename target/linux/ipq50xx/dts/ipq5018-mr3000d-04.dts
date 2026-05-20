@@ -232,7 +232,7 @@
 			compatible = "qcom,ess-switch-qca83xx";
 			device_id = <1>;
 
-			reset_gpio = <27>;
+			reset_gpio = <26>;
 
 			switch_access_mode = "mdio";
 			mdio-bus = <&mdio1>;
