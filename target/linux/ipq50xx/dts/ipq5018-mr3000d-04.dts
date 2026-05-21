@@ -41,16 +41,12 @@
 		};
 	};
 
-
-
 	thermal-zones {
 		status = "ok";
 	};
 };
 
-&tmc_etr {
-	/delete-property/ memory-region;
-};
+
 
 &tlmm {
 	blsp_uart0_pins: blsp_uart0_pins {
@@ -151,10 +147,6 @@
 	status = "ok";
 };
 
-&tsens {
-	status = "ok";
-};
-
 &soc {
 	leds {
 		compatible = "gpio-leds";
@@ -225,7 +217,7 @@
 				// MAC1 ---SGMII---> QCA8337 SerDes
 				port@1 {
 					port_id = <2>;
-					mdiobus = <&mdio1>;
+				
 					forced-speed = <1000>;
 					forced-duplex = <1>;
 				};
@@ -251,7 +243,7 @@
 			qca,ar8327-initvals = <
 				0x000c 0x00000080  // PAD6_MODE = MAC6_SGMII_EN
 				0x0010 0x002613a0  // PWS_REG = DEFAULT_VALUE | SERDES_AEN
-				0x0094 0x0000004e  // PORT6_STATUS = DEFAULT_VALUE | DUPLEX_MODE_6 | RXMAC_EN_6 |
+				0x0094 0x000010ce  // PORT6_STATUS = DEFAULT_VALUE | DUPLEX_MODE_6 | RXMAC_EN_6 |
 						   //                TXMAC_EN_6 | SPEED_6(1000M)
 				0x00e0 0xc74164de  // SGMII_CTRL = DEFAULT_VALUE | MODE_CTRL_25M(SGMII_PHY) | SGMII_EN_SD |
 						   //              SGMII_EN_TX | SGMII_EN_RX | SGMII_EN_PLL
@@ -312,7 +304,7 @@
 		clock-names = "nss-snoc-gmac-axi-clk";
 
 		qcom,mactype = <2>; // GMAC_HAL_TYPE_SYN_GMAC
-		local-mac-address = [fc 8d 13 de d7 54];
+		local-mac-address = [000000000000];
 		mdio-bus = <&mdio0>;
 		qcom,phy-mdio-addr = <7>;
 		phy-mode = "internal";
@@ -332,7 +324,7 @@
 		clock-names = "nss-snoc-gmac-axi-clk";
 
 		qcom,mactype = <2>; // GMAC_HAL_TYPE_SYN_GMAC
-		local-mac-address = [fc 8d 13 de d7 55];
+		local-mac-address = [000000000000];
 		phy-mode = "sgmii";
 
 	};
@@ -383,52 +375,8 @@
 	};
 };
 
-&usb3 {
-	qcom,multiplexed-phy;
-	qcom,phy-mux-regs = <&tcsr_q6_block 0x2540>;
-	device-power-gpio = <&tlmm 24 1>;
-	status = "ok";
-};
 
 &q6v5_wcss {
-	compatible = "qcom,ipq5018-q6-mpd";
-	#address-cells = <1>;
-	#size-cells = <1>;
-	ranges;
-
-	resets =
-		<&gcc GCC_WCSSAON_RESET>,
-		<&gcc GCC_WCSS_Q6_BCR>;
-	reset-names =
-		"wcss_aon_reset",
-		"wcss_q6_reset";
-
-	clocks =
-		<&gcc GCC_Q6_AXIS_CLK>,
-		<&gcc GCC_WCSS_ECAHB_CLK>,
-		<&gcc GCC_Q6_AXIM_CLK>,
-		<&gcc GCC_Q6_AXIM2_CLK>,
-		<&gcc GCC_Q6_AHB_CLK>,
-		<&gcc GCC_Q6_AHB_S_CLK>,
-		<&gcc GCC_WCSS_AXI_S_CLK>;
-	clock-names =
-		"gcc_q6_axis_clk",
-		"gcc_wcss_ecahb_clk",
-		"gcc_q6_axim_clk",
-		"gcc_q6_axim2_clk",
-		"gcc_q6_ahb_clk",
-		"gcc_q6_ahb_s_clk",
-		"gcc_wcss_axi_s_clk";
-
-	reg =
-		<0x0cd00000 0x4040>,
-		<0x1938000 0x8>,
-		<0x193d204 0x4>;
-	reg-names =
-		"qdsp6",
-		"tcsr-msip",
-		"tcsr-q6";
-
 	memory-region = <&q6_mem_regions>;
 
 	qcom,rproc = <&q6v5_wcss>;
@@ -468,7 +416,7 @@
 		reg = <0x4ab000 0x20>;
 		reg-names = "rmb";
 
-		qcom,halt-regs = <&tcsr_q6_block 0xa000 0xd000 0x0>;
+		// qcom,halt-regs = <&tcsr_q6_block 0xa000 0xd000 0x0>;
 
 		interrupts-extended =
 			<&wcss_smp2p_in 8 0>,
@@ -490,10 +438,8 @@
 			"stop",
 			"spawn";
 
-
 		firmware = "IPQ5018/q6_fw.mdt";
 		m3_firmware = "IPQ5018/m3_fw.mdt";
-		
 	};
 
 	// QCN6102
@@ -519,7 +465,6 @@
 			"shutdown",
 			"stop",
 			"spawn";
-			
 
 		firmware = "IPQ5018/q6_fw.mdt";
 		m3_firmware = "qcn6122/m3_fw.mdt";
@@ -531,14 +476,20 @@
 	qcom,multipd_arch;
 	qcom,rproc = <&q6_wcss_pd1>;
 	qcom,userpd-subsys-name = "q6v5_wcss_userpd1";
-
+	 
+		 
+			 
+			 
 	qcom,board_id = <0x24>;
-    qcom,tgt-mem-mode = <0x1>;
-	qcom,bdf-addr = <0x4c400000 0x4c400000 0x4c400000 0x0 0x0 0x0>;
-	qcom,caldb-addr = <0x4d200000 0x4d200000 0x0 0x0 0x0 0x0>;
-	qcom,caldb-size = <0x00200000>;
 
-																								 
+	qcom,bdf-addr = <0x4c400000 0x4c400000 0x4c400000 0 0>;									  							
+									  
+								
+	qcom,caldb-addr = <0x4d400000>;
+							 				   
+					   
+	//m3-dump-addr = <0>;
+	  
 
 	status = "ok";
 };
@@ -550,15 +501,15 @@
 	qcom,userpd-subsys-name = "q6v5_wcss_userpd2";
 
 	qcom,board_id = <0x60>;
-    qcom,tgt-mem-mode = <0x1>;
-	qcom,bdf-addr = <0x4ed00000 0x4ed00000 0x4ed00000 0x0 0x0 0x0>;
-	qcom,caldb-addr = <0x4ff00000 0x4ff00000 0x0 0x0 0x0 0x0>;
-    qcom,caldb-size = <0x00500000>;
-	
-	
 
-	m3-dump-addr = <0x4df00000>;
-
+	qcom,bdf-addr = <0x4ed00000 0x4ed00000 0x4e400000 0 0>;									  
+									  
+	qcom,caldb-addr = <0x4ff00000>;	
+							  
+					   
+	 
+	m3-dump-addr = <0x4e000000>;
+	  
 
 	status = "ok";
 };
