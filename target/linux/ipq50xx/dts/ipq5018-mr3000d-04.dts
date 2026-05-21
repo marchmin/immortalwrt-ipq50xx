@@ -439,7 +439,7 @@
 		     /*     length: */ 4
 		     /*      PD id: */ 2
 		     /* reset GPIO: */ 15
-		     /*   reserved: */ 0 0>;;
+		     /*   reserved: */ 0 0>;
 
 	status = "ok";
 
